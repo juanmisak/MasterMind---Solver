@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerInParent="true"
+    android:background="#000000"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity" >
+
+    <ImageView
+        android:id="@+id/Logopre"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/logopres" />
+
+    <TextView
+        android:id="@+id/text_desripcp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:layout_marginTop="50dp"
+        android:inputType="textMultiLine"
+        android:paddingTop="50dp"
+        android:text="El juego consiste en Elegir mentalmente o anotarla en algun lado una combinacion de 4 colores en las fichas que tenemos abajo, El objetivo del juego inteligente es descubrir mediante pasos usando algoritmos geneticos. "
+        android:textColor="#FFFFFF" />
+
+    <!-- selection of pegs -->
+
+    <LinearLayout
+        android:id="@+id/selection"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/bluePeg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/bluepeg" />
+
+        <ImageView
+            android:id="@+id/greenPeg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/greenpeg" />
+
+        <ImageView
+            android:id="@+id/redPeg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/redpeg" />
+
+        <ImageView
+            android:id="@+id/whitePeg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/whitepeg" />
+
+        <ImageView
+            android:id="@+id/yellowPeg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/yellowpeg" />
+
+        <ImageView
+            android:id="@+id/purplePeg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/purplepeg" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/newGame"
+        style="@style/Boton_ingreso"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:layout_marginBottom="40dp"
+        android:text="New Game" />
+
+</LinearLayout>
