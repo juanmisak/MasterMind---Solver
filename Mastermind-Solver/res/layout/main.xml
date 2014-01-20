@@ -15,7 +15,7 @@
     <ImageView
         android:id="@+id/Logopre"
         android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_height="170dp"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/logopres" />
 
@@ -25,12 +25,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="10dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:inputType="textMultiLine"
         android:paddingTop="50dp"
-        android:text="El juego consiste en Elegir mentalmente o anotarla en algun lado una combinacion de 4 colores en las fichas que tenemos abajo, El objetivo del juego inteligente es descubrir mediante pasos usando algoritmos geneticos. "
+        android:text="The game consists choose mentally or write it down somewhere in a combination of 4 colors on the chips you have below, The goal of game is to discover smart steps by using genetic algorithms. "
         android:textColor="#FFFFFF" />
 
+    
     <!-- selection of pegs -->
 
     <LinearLayout
@@ -77,6 +78,50 @@
             android:src="@drawable/purplepeg" />
     </LinearLayout>
 
+    
+    
+    <TextView
+        android:id="@+id/text_desripcp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:text="An Example of combination is: "
+        android:textColor="#FFFFFF" />
+
+    
+    <LinearLayout
+        android:id="@+id/selectionrand"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/rand1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/bluepeg" />
+
+        <ImageView
+            android:id="@+id/rand2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/greenpeg" />
+
+        <ImageView
+            android:id="@+id/rand3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/redpeg" />
+
+        <ImageView
+            android:id="@+id/rand4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/whitepeg" />
+    
+    </LinearLayout>
     <Button
         android:id="@+id/newGame"
         style="@style/Boton_ingreso"

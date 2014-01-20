@@ -3,7 +3,8 @@
     android:id="@+id/mastermindLayout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#000000" >
+        android:gravity="center_horizontal"
+    android:background="@drawable/background" >
 
     <Chronometer
         android:id="@+id/timer"
@@ -157,7 +158,7 @@
                     android:id="@+id/confirm02"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/peg08"
+                    android:layout_toRightOf="@+id/smallPeg8"
                     android:onClick="confirm" />
             </RelativeLayout>
 
@@ -170,7 +171,8 @@
                 <com.example.mastermind_solver.SmallPegSlot
                     android:id="@+id/smallPeg9"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/peg12"  />
 
                 <com.example.mastermind_solver.SmallPegSlot
                     android:id="@+id/smallPeg10"
@@ -182,7 +184,9 @@
                     android:id="@+id/smallPeg11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/peg12"
                     android:layout_below="@+id/smallPeg9" />
+
 
                 <com.example.mastermind_solver.SmallPegSlot
                     android:id="@+id/smallPeg12"
@@ -195,8 +199,7 @@
                     android:id="@+id/peg09"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/smallPeg10"
-                    android:onClick="select" />
+                                        android:onClick="select" />
 
                 <com.example.mastermind_solver.PegSlot
                     android:id="@+id/peg10"
@@ -223,7 +226,7 @@
                     android:id="@+id/confirm03"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/peg12"
+                    android:layout_toRightOf="@+id/smallPeg12"
                     android:onClick="confirm" />
             </RelativeLayout>
 
@@ -233,35 +236,10 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" >
 
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg13"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg14"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/smallPeg13" />
-
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg15"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/smallPeg13" />
-
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg16"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/smallPeg14"
-                    android:layout_toRightOf="@+id/smallPeg15" />
-
                 <com.example.mastermind_solver.PegSlot
                     android:id="@+id/peg13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/smallPeg14"
                     android:onClick="select" />
 
                 <com.example.mastermind_solver.PegSlot
@@ -285,11 +263,37 @@
                     android:layout_toRightOf="@+id/peg15"
                     android:onClick="select" />
 
+                <com.example.mastermind_solver.SmallPegSlot
+                    android:id="@+id/smallPeg13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" 
+                    android:layout_toRightOf="@+id/peg16"/>
+
+                <com.example.mastermind_solver.SmallPegSlot
+                    android:id="@+id/smallPeg14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/smallPeg13" />
+
+                <com.example.mastermind_solver.SmallPegSlot
+                    android:id="@+id/smallPeg15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/smallPeg13"
+                    android:layout_toRightOf="@+id/peg16" />
+
+                <com.example.mastermind_solver.SmallPegSlot
+                    android:id="@+id/smallPeg16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/smallPeg14"
+                    android:layout_toRightOf="@+id/smallPeg15" />
+                
                 <ImageView
                     android:id="@+id/confirm04"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/peg16"
+                    android:layout_toRightOf="@+id/smallPeg16"
                     android:onClick="confirm" />
             </RelativeLayout>
 
@@ -299,35 +303,10 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" >
 
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg17"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg18"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/smallPeg17" />
-
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg19"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/smallPeg17" />
-
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg20"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/smallPeg18"
-                    android:layout_toRightOf="@+id/smallPeg19" />
-
                 <com.example.mastermind_solver.PegSlot
                     android:id="@+id/peg17"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/smallPeg18"
                     android:onClick="select" />
 
                 <com.example.mastermind_solver.PegSlot
@@ -351,12 +330,41 @@
                     android:layout_toRightOf="@+id/peg19"
                     android:onClick="select" />
 
+                
+                <com.example.mastermind_solver.SmallPegSlot
+                    android:id="@+id/smallPeg17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" 
+                    android:layout_toRightOf="@+id/peg20"/>
+
+                <com.example.mastermind_solver.SmallPegSlot
+                    android:id="@+id/smallPeg18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/smallPeg17" />
+
+                <com.example.mastermind_solver.SmallPegSlot
+                    android:id="@+id/smallPeg19"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/smallPeg17" 
+                    android:layout_toRightOf="@+id/peg20"/>
+
+                <com.example.mastermind_solver.SmallPegSlot
+                    android:id="@+id/smallPeg20"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/smallPeg18"
+                    android:layout_toRightOf="@+id/smallPeg19" />
+                
                 <ImageView
                     android:id="@+id/confirm05"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/peg20"
+                    android:layout_toRightOf="@+id/smallPeg20"
                     android:onClick="confirm" />
+                
+                
             </RelativeLayout>
 
             <!-- guess 5 -->
@@ -365,35 +373,10 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" >
 
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg21"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg22"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/smallPeg21" />
-
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg23"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/smallPeg21" />
-
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg24"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/smallPeg22"
-                    android:layout_toRightOf="@+id/smallPeg23" />
-
                 <com.example.mastermind_solver.PegSlot
                     android:id="@+id/peg21"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/smallPeg22"
                     android:onClick="select" />
 
                 <com.example.mastermind_solver.PegSlot
@@ -417,11 +400,38 @@
                     android:layout_toRightOf="@+id/peg23"
                     android:onClick="select" />
 
+                
+                <com.example.mastermind_solver.SmallPegSlot
+                    android:id="@+id/smallPeg21"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/peg24" />
+
+                <com.example.mastermind_solver.SmallPegSlot
+                    android:id="@+id/smallPeg22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/smallPeg21" />
+
+                <com.example.mastermind_solver.SmallPegSlot
+                    android:id="@+id/smallPeg23"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/smallPeg21" 
+                    android:layout_toRightOf="@+id/peg24" />
+
+                <com.example.mastermind_solver.SmallPegSlot
+                    android:id="@+id/smallPeg24"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/smallPeg22"
+                    android:layout_toRightOf="@+id/smallPeg23" />
+                
                 <ImageView
                     android:id="@+id/confirm06"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/peg24"
+                    android:layout_toRightOf="@+id/smallPeg24"
                     android:onClick="confirm" />
             </RelativeLayout>
 
@@ -431,35 +441,10 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" >
 
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg25"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg26"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/smallPeg25" />
-
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg27"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/smallPeg26" />
-
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg28"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/smallPeg26"
-                    android:layout_toRightOf="@+id/smallPeg27" />
-
                 <com.example.mastermind_solver.PegSlot
                     android:id="@+id/peg25"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/smallPeg26"
                     android:onClick="select" />
 
                 <com.example.mastermind_solver.PegSlot
@@ -483,12 +468,42 @@
                     android:layout_toRightOf="@+id/peg27"
                     android:onClick="select" />
 
+                
+                <com.example.mastermind_solver.SmallPegSlot
+                    android:id="@+id/smallPeg25"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/peg28"/>
+
+                <com.example.mastermind_solver.SmallPegSlot
+                    android:id="@+id/smallPeg26"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/smallPeg25" />
+
+                <com.example.mastermind_solver.SmallPegSlot
+                    android:id="@+id/smallPeg27"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/smallPeg25"
+                    android:layout_toRightOf="@+id/peg28" />
+
+                <com.example.mastermind_solver.SmallPegSlot
+                    android:id="@+id/smallPeg28"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/smallPeg26"
+                    android:layout_toRightOf="@+id/smallPeg27" />
+                
+                
                 <ImageView
                     android:id="@+id/confirm07"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/peg28"
+                    android:layout_toRightOf="@+id/smallPeg28"
                     android:onClick="confirm" />
+                
+                
             </RelativeLayout>
 
             <!-- guess 3 -->
@@ -497,35 +512,10 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" >
 
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg29"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg30"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/smallPeg29" />
-
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg31"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/smallPeg29" />
-
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg32"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/smallPeg30"
-                    android:layout_toRightOf="@+id/smallPeg31" />
-
                 <com.example.mastermind_solver.PegSlot
                     android:id="@+id/peg29"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/smallPeg30"
                     android:onClick="select" />
 
                 <com.example.mastermind_solver.PegSlot
@@ -547,170 +537,70 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/peg31"
-                    android:onClick="select" />
+                    android:onClick="select" />                
+                
+                <com.example.mastermind_solver.SmallPegSlot
+                    android:id="@+id/smallPeg29"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/peg32" />
+
+                <com.example.mastermind_solver.SmallPegSlot
+                    android:id="@+id/smallPeg30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/smallPeg29" />
+
+                <com.example.mastermind_solver.SmallPegSlot
+                    android:id="@+id/smallPeg31"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/smallPeg29"
+                    android:layout_toRightOf="@+id/peg32" />
+
+                <com.example.mastermind_solver.SmallPegSlot
+                    android:id="@+id/smallPeg32"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/smallPeg30"
+                    android:layout_toRightOf="@+id/smallPeg31" />
 
                 <ImageView
                     android:id="@+id/confirm08"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/peg32"
+                    android:layout_toRightOf="@+id/smallPeg32"
                     android:onClick="confirm" />
             </RelativeLayout>
 
-            <!-- guess 2 -->
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent" >
-
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg33"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg34"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/smallPeg33" />
-
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg35"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/smallPeg33" />
-
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg36"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/smallPeg34"
-                    android:layout_toRightOf="@+id/smallPeg35" />
-
-                <com.example.mastermind_solver.PegSlot
-                    android:id="@+id/peg33"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/smallPeg34"
-                    android:onClick="select" />
-
-                <com.example.mastermind_solver.PegSlot
-                    android:id="@+id/peg34"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/peg33"
-                    android:onClick="select" />
-
-                <com.example.mastermind_solver.PegSlot
-                    android:id="@+id/peg35"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/peg34"
-                    android:onClick="select" />
-
-                <com.example.mastermind_solver.PegSlot
-                    android:id="@+id/peg36"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/peg35"
-                    android:onClick="select" />
-
-                <ImageView
-                    android:id="@+id/confirm09"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/peg36"
-                    android:onClick="confirm" />
-            </RelativeLayout>
-
-            <!-- guess 1 -->
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent" >
-
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg37"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg38"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/smallPeg37" />
-
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg39"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/smallPeg37" />
-
-                <com.example.mastermind_solver.SmallPegSlot
-                    android:id="@+id/smallPeg40"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/smallPeg38"
-                    android:layout_toRightOf="@+id/smallPeg39" />
-
-                <com.example.mastermind_solver.PegSlot
-                    android:id="@+id/peg37"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/smallPeg38"
-                    android:onClick="select" />
-
-                <com.example.mastermind_solver.PegSlot
-                    android:id="@+id/peg38"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/peg37"
-                    android:onClick="select" />
-
-                <com.example.mastermind_solver.PegSlot
-                    android:id="@+id/peg39"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/peg38"
-                    android:onClick="select" />
-
-                <com.example.mastermind_solver.PegSlot
-                    android:id="@+id/peg40"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/peg39"
-                    android:onClick="select" />
-
-                <ImageView
-                    android:id="@+id/confirm10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/peg40"
-                    android:onClick="confirm"
-                    android:src="@drawable/row" />
-            </RelativeLayout>
             
-            
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent" >
+                android:layout_height="fill_parent"
+                android:orientation="vertical" >
 	       	 <TextView
 	            android:id="@+id/textcon"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:textColor="#FFFFFF"
-				android:text="Consola de Log:" />
-				
-	       	 <TextView
-	            android:id="@+id/consola"
-	            android:layout_width="fill_parent"
-        android:layout_marginRight="30dp"
-	            android:layout_height="80dp"
-	            android:layout_below="@+id/textcon"
-	            android:background="#000000"
-	            android:textColor="#FFFFFF"
-				android:text="" />
-            </RelativeLayout>
+				android:text="Log Console:" />
+
+				<ScrollView
+				    android:layout_width="match_parent"
+				    android:layout_height="80dp" >
+
+				    <TextView
+				        android:id="@+id/consola"
+				        android:layout_width="fill_parent"
+				        android:layout_height="80dp"
+				        android:layout_below="@+id/textcon"
+				        android:layout_marginRight="30dp"
+				        android:background="#000000"
+				        android:inputType="textMultiLine"
+				        android:textColor="#FFFFFF" />
+				</ScrollView>
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
