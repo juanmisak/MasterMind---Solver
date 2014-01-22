@@ -35,7 +35,7 @@ public class Mastermind extends Activity {
     int mGuess = 0;
     Resources mResources;
     // state[] shows which colour peg has been selected
-    boolean[] mState = new boolean[Engine.TOTAL_NO_PEGS];
+    boolean[] mState = new boolean[Engine.NUM_COLORES];
     
     // Map the ImageView id's to an array index for simplicity when referencing later
     // Very inefficient, needs to be fixed.

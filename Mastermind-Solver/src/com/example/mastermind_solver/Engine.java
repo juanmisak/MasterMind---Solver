@@ -1,51 +1,85 @@
 package com.example.mastermind_solver;
 
+import java.util.ArrayList;
 /**
  *
- * @author Tariq Patel
+ * @author Juan Mite
  *
  */
 final class Engine {
-    static final int TOTAL_NO_PEGS = 6;
-    private static final int COMBO_LENGTH = 4;
-    private final Peg[] mCombination = new Peg[COMBO_LENGTH];
+   static int NUM_COLORES = 6;
 
-    Engine() {
-        for (int i = 0; i < mCombination.length; i++)
-            mCombination[i] = new Peg(Mastermind.sPegs[(int) ((TOTAL_NO_PEGS) * Math.random())]);
-    } // Engine()
+public enum Colors {
+	   AZUL,
+	   VERDE,
+	   ROJO,
+	   BLANCO,
+	   AMARILLO,
+	   VIOLETA
+	}	
+	
+	ArrayList<Integer> guesses = new ArrayList<Integer>();
+	ArrayList<Integer> feedbacks = new ArrayList<Integer>();
+	ArrayList<Integer> poblacion = new ArrayList<Integer>();
+	ArrayList<Integer> pastGuesses = new ArrayList<Integer>();
 
-    Peg[] getCombination() {
-        return mCombination;
-    } // getCombination()
+	public ArrayList<Integer> crearPoblacion() {
+		for(int h=0;h<NUM_COLORES;h++){						
+			for(int k=0;k<NUM_COLORES;k++){
+				for(int j=0;j<NUM_COLORES;j++){
+					for(int i=0;i<NUM_COLORES;i++){
+						poblacion.add((1000*h)+(100*k)+(j*10)+i);
+						}
+					}
+				}
+		}
+		return poblacion;
+	}
+	
+	public int getScore(int guess) {
+		int score = 0;
+		int greyPeks = guess % 10;
+		int blackPeks = guess/10;
+		int n=blackPeks+greyPeks;
+		
+		score = (n*(n+1))/2 + blackPeks;
+		
+		return score;
+	}
+	
+	
+	public Integer Mutation(int guess) {
+		Integer guessMuted = 0;
+		int p1 =guess/1000;  
+		int p2 =(guess/100)%10;
+		int p3 =(guess/10) % 10; 
+		int p4 = guess % 10;
+		
+		int vector[]=new int [4];
+		int i=0,j=0;
+		vector[i]=(int)(Math.random()*4);
+		for(i=1;i<10;i++){
+			vector[i]=(int)(Math.random()*4);
+			for(j=0;j<i;j++){
+				if(vector[i]==vector[j])			{
+					i--;
+				}
+			}
+		}
+		guessMuted = (int) (p1*Math.pow(10,vector[0])+
+							p2*Math.pow(10,vector[1])+
+							p3*Math.pow(10,vector[2]+
+							p4*Math.pow(10,vector[3])));
+			
+		return guessMuted;
+	}
+	
+	public ArrayList<Integer> Selection(int eliminateGuess){
+		
+		
+		
+		return poblacion;		
+	}
+	
 
-    void resetStates() {
-        for (int i = 0; i < mCombination.length; i++) {
-            mCombination[i].setReady(true);
-        } // for
-    } // resetStates()
-
-    // Check the peg is the right colour and in the right position
-    boolean checkPos(final int guess, final int pos) {
-        if (mCombination[pos].getReady()) {
-            if (guess == mCombination[pos].getPeg()) {
-                mCombination[pos].setReady(false);
-                return true;
-            } // if
-        } // if
-        return false;
-    } // checkPos(int, int)
-
-    // Check the peg is the right colour but in the wrong position
-    boolean checkPeg(final int guess) {
-        for (int i = 0; i < mCombination.length; i++) {
-            if (mCombination[i].getReady()) {
-                if (guess == mCombination[i].getPeg()) {
-                    mCombination[i].setReady(false);
-                    return true;
-                } // if
-            } // if
-        } // for
-        return false;
-    } // checkPeg(int)
-} // class Engine
+}
