@@ -264,6 +264,11 @@ public class Mastermind extends Activity {
 }
 public void generar_sigFichas(){
 	Percent randomPercent = new Percent(random.nextInt(MAX_PERCENT_RANDOM_VALUE));
+	if(jtuca==1){
+		updateViews(new Percent(100));
+	}else{
+		updateViews(randomPercent);
+	}
     updateViews(randomPercent);
     String[] acolor=new String[4];
     ///randoms de las fichas
