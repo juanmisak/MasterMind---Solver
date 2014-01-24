@@ -1,13 +1,18 @@
 package com.example.mastermind_solver;
 
 import java.util.ArrayList;
+import java.util.ListIterator;
+
+import android.R.bool;
 /**
  *
  * @author Juan Mite
  *
  */
 final class Engine {
-   static int NUM_COLORES = 6;
+   private static final bool True = null;
+private static final bool False = null;
+static int NUM_COLORES = 6;
 
 public enum Colors {
 	   AZUL,
@@ -36,10 +41,10 @@ public enum Colors {
 		return poblacion;
 	}
 	
-	public int getScore(int guess) {
+	public int getScore(int feedback) {
 		int score = 0;
-		int greyPeks = guess % 10;
-		int blackPeks = guess/10;
+		int greyPeks = feedback % 10;
+		int blackPeks = feedback/10;
 		int n=blackPeks+greyPeks;
 		
 		score = (n*(n+1))/2 + blackPeks;
@@ -74,12 +79,94 @@ public enum Colors {
 		return guessMuted;
 	}
 	
-	public ArrayList<Integer> Selection(int eliminateGuess){
-		
-		
-		
-		return poblacion;		
+	public bool allBlack(int guess){
+		if(getScore(guess)== 14)
+			return True;
+		else
+			return False;
 	}
 	
+	
+	public int randomGuess (){
+		int n = 0;
+		n = (int)(Math.random()*poblacion.size());
+		int guess = poblacion.get(n);
+		return guess;
+	}
+	
+	public ArrayList<Integer> exterminar(int feedback, int guess) {
+		
+		if (getScore(feedback) == 0){
+			killAll(guess);
+			
+		}
+		
+		return poblacion;
+	}
+	public void killOne(int guess) {
+		ListIterator<Integer> itera = poblacion.listIterator(poblacion.size());
+		while (itera.hasPrevious()){
+			int GUESS = itera.previous().intValue();
+			if (GUESS == guess)
+			itera.remove();
+		}
+	}
+	
+	public void killComplement(int guess) {
+		int p1 =guess/1000;  
+		int p2 =(guess/100)%10;
+		int p3 =(guess/10) % 10; 
+		int p4 = guess % 10;
+		
+		ListIterator<Integer> itera = poblacion.listIterator(poblacion.size());
+		while (itera.hasPrevious()){
+			int GUESS = itera.previous().intValue();
+			int q1 =GUESS/1000;  
+			int q2 =(GUESS/100)%10;
+			int q3 =(GUESS/10) % 10; 
+			int q4 = GUESS % 10;
+			if (!(p1==q1||p1==q2||p1==q3||p1==q4)&&
+				(p2==q1||p2==q2||p2==q3||p2==q4)&&
+				(p3==q1||p3==q2||p3==q3||p3==q4)&&
+				(p4==q1||p4==q2||p4==q3||p4==q4)){
+				
+				itera.remove();
+			}
+		}
+		
+	}
+	
+	public void killAll(int guess) {
+		// TODO Auto-generated method stub
+		int p1 =guess/1000;  
+		int p2 =(guess/100)%10;
+		int p3 =(guess/10) % 10; 
+		int p4 = guess % 10;
+		
+		ListIterator<Integer> itera = poblacion.listIterator(poblacion.size());
+		while (itera.hasPrevious()){
+			int GUESS = itera.previous().intValue();
+			int q1 =GUESS/1000;  
+			int q2 =(GUESS/100)%10;
+			int q3 =(GUESS/10) % 10; 
+			int q4 = GUESS % 10;
+			if (p1==q1||p1==q2||p1==q3||p1==q4||
+				p2==q1||p2==q2||p2==q3||p2==q4||
+				p3==q1||p3==q2||p3==q3||p3==q4||
+				p4==q1||p4==q2||p4==q3||p4==q4){
+				
+				itera.remove();
+			}
+		}
+		
+	}
 
+	public int bestGuess(int actualFeedback, int pastFeedback) {
+		
+		if (getScore(actualFeedback) < getScore(pastFeedback))
+			return pastFeedback;
+		else
+			return actualFeedback;
+	}
+	
 }
