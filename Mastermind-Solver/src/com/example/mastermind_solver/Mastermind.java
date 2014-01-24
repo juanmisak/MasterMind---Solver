@@ -1,5 +1,6 @@
 package com.example.mastermind_solver;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -9,6 +10,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -27,7 +31,11 @@ public class Mastermind extends Activity {
     private Button randomValueButton;
     private TextView progressValueTextView;    
     
-    
+    int ituca=0;
+    int jtuca=0;
+    int confirt=7;
+    TextView console;
+    String logconsole="";
 	// Splash screen timer
 	private static int SPLASH_TIME_OUT = 3000;
     static final int BLUE = 0, GREEN = 1, RED = 2, WHITE = 3, YELLOW = 4, PURPLE = 5;
@@ -49,7 +57,7 @@ public class Mastermind extends Activity {
     int mGuess = 0;
     Resources mResources;
     // state[] shows which colour peg has been selected
-    boolean[] mState = new boolean[Engine.TOTAL_NO_PEGS];
+    boolean[] mState = new boolean[Engine.NUM_COLORES];
     
     // Map the ImageView id's to an array index for simplicity when referencing later
     // Very inefficient, needs to be fixed.
@@ -121,9 +129,9 @@ public class Mastermind extends Activity {
         sSmallSlotPosition[29] = R.id.smallPeg3;
         sSmallSlotPosition[30] = R.id.smallPeg2;
         sSmallSlotPosition[31] = R.id.smallPeg1;
-        
+        /*
         map(sSlotPosition, pegSlots);
-        map(sSmallSlotPosition, sSmallPegSlots);
+        map(sSmallSlotPosition, sSmallPegSlots);*/
     }
 
     private ImageView bluePeg;
@@ -150,8 +158,7 @@ public class Mastermind extends Activity {
 
         progressBar = (VerticalProgressBar) findViewById(R.id.acd_id_proress_bar);
         progressValueTextView = (TextView) findViewById(R.id.acd_id_proress_value);
-        Percent randomPercent = new Percent(random.nextInt(MAX_PERCENT_RANDOM_VALUE));
-        updateViews(randomPercent);
+        
         
         mResources = getResources();
         // Initialise the state array
@@ -169,31 +176,23 @@ public class Mastermind extends Activity {
         findViewById(R.id.confirm08).setClickable(false);
         
 
-        TextView console = (TextView) findViewById(R.id.consola);
-        String logconsole="";
-        int j=0;
+        console = (TextView) findViewById(R.id.consola);
         ///Generando aletaorio en cada iteracion de los 8
-        for (int i = 0; i < confirm.length; i++) {
-	        /*ImageView view = (ImageView) findViewById(confirm[i]);	
-	        view.setImageDrawable(mResources.getDrawable(R.drawable.confirm));*/
-	        logconsole+="Combination guessing.... \n";
-	        j++;
-	        logconsole+="Round #"+j+" \n";
-	        logconsole+="[color1, color2, color3, color4]\n";
-	        
-        }
+
+
+        jtuca++;
+        logconsole+="Combination guessing.... \n";   	
+        logconsole+="Round #"+jtuca+" \n";
+        generar_sigFichas();
         console.setText(logconsole);
-        ///randoms de las fichas
-        for (int i =0; i <4; i++) {
-        	create_randompeck((ImageView) findViewById(sSlotPosition[i]));		
-		}
+        
         //Bloqueando clickable a las fichas generadas
         for (int i =0; i < sSlotPosition.length; i++) {
             ImageView view = (ImageView) findViewById(sSlotPosition[i]);
             view.setClickable(false);	
+            ImageView view2= (ImageView) findViewById(sSmallSlotPosition[i]);
+            view2.setClickable(true);
 		}
-        
-       
         
         
         TOTAL_PEG_SLOTS=TOTAL_PEG_SLOTS-4;
@@ -203,32 +202,80 @@ public class Mastermind extends Activity {
             view.setClickable(false);
 		}
         
-        ImageView view = (ImageView) findViewById(confirm[7]);	
+        ImageView view = (ImageView) findViewById(confirm[confirt]);
+        confirt--;
         view.setImageDrawable(mResources.getDrawable(R.drawable.confirm));
         view.setClickable(true);
+        
         //findViewById(R.id.confirm08).setClickable(false);
         
         ///randoms de las feedbacks
-        for (int i = 0; i < sSmallSlotPosition.length; i++) {
-
+        for ( int i = 0; i < sSmallSlotPosition.length; i++) {
             ImageView view1 = (ImageView) findViewById(sSmallSlotPosition[i]);
-            
             //view1.setImageDrawable(mResources.getDrawable(R.drawable.smallPeg));
             view1.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
+					ImageView v1 = (ImageView)v;
 					
-				}
-			});
+					Drawable d1=v1.getDrawable();
+					
+					if(v1.getDrawable()== null){			//comparo si el feed esta vacio lo cambia a rojo
+						v1.setImageDrawable(mResources.getDrawable(R.drawable.black_peck));								
+					}else if(d1.getConstantState().equals( mResources.getDrawable(R.drawable.black_peck).getConstantState())){	//comparo si el feed esta rojo lo cambia a blanco				
+							v1.setImageDrawable(mResources.getDrawable(R.drawable.grey_peck));							
+						}else if(d1.getConstantState().equals( mResources.getDrawable(R.drawable.grey_peck).getConstantState())){  //comparo si el feed esta blanco lo cambia a vacio
+								v1.setImageDrawable(null);
+						}
+					}
+				});
             
-         	create_randompeck_feedback((ImageView) findViewById(sSmallSlotPosition[i]));			
  		}
+        
+        for (int i = 0; i < 8; i++) {
+            ImageView view3 = (ImageView) findViewById(confirm[i]);
+            //view3.setClickable(false);
+            view3.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					v.setClickable(false);
+					if(confirt>=0){				 
+				        logconsole+="Combination guessing.... \n";   	
+				        logconsole+="Round #"+jtuca+" \n";
+						generar_sigFichas();
+						ImageView v1 = (ImageView) findViewById(confirm[confirt]);
+						confirt--;
+						v1.setImageDrawable(mResources.getDrawable(R.drawable.confirm));
+						v1.setClickable(true);
+						//////////escribiendo en consola
+
+				        jtuca++;
+				        //logconsole+="[color1, color2, color3, color4]\n";
+				        console.setText(logconsole);
+					}
+					}
+				});
+		}
+
+     	//create_randompeck_feedback((ImageView) findViewById(sSmallSlotPosition[i]));			
+}
+public void generar_sigFichas(){
+	Percent randomPercent = new Percent(random.nextInt(MAX_PERCENT_RANDOM_VALUE));
+    updateViews(randomPercent);
+    String[] acolor=new String[4];
+    ///randoms de las fichas
+    for (int i =0; i <4; i++) {
+    	String Color=create_randompeck((ImageView) findViewById(sSlotPosition[ituca]));	
+    	acolor[i]=Color;
+    	ituca++;
+	}
+
+    logconsole+="["+acolor[0]+","+acolor[1]+","+acolor[2]+","+acolor[3]+"]\n";
 
 }
-	
-
 public void create_randompeck_feedback(ImageView view){
 	
 
@@ -245,389 +292,69 @@ public void create_randompeck_feedback(ImageView view){
 	 }
 }
 
-public void create_randompeck(ImageView view){
+public String create_randompeck(ImageView view){
 	
-
+	String color="";
 	int randInt = new Random().nextInt(6) + 1;
 	 switch (randInt) {
      case 1:
          view.setImageDrawable(mResources.getDrawable(R.drawable.bluepeg));
+         color="blue";
          break;
      case 2:
          view.setImageDrawable(mResources.getDrawable(R.drawable.greenpeg));
+         color="green";
          break;
      case 3:
          view.setImageDrawable(mResources.getDrawable(R.drawable.redpeg));
-         break;
+         color="red";
      case 4:
          view.setImageDrawable(mResources.getDrawable(R.drawable.purplepeg));
+         color="purple";
          break;
      case 5:
          view.setImageDrawable(mResources.getDrawable(R.drawable.whitepeg));
-         break;
+         color="white";
      case 6:
          view.setImageDrawable(mResources.getDrawable(R.drawable.yellowpeg));
+         color="yellow";
          break;
      default:
          break;
 	 }
+	 
+	 return color;
 }
 	
-	/*   DE  AQUI PARA ABAJO ESTAS FUNCIONES SON COMPLEMENTARIAS PARA AYUDARME A JUGAR POR AHORA NO ME INTERESAN*/
-    protected static final int MENU_NEW_GAME = Menu.FIRST;
-    protected static final int MENU_INSTRUCTIONS = Menu.FIRST + 1;
-
-    // Map the slotPositions to an index for each row on the board
-    private static void map(final int[] array, final int[][] dArray) {
-        int k = 0;
-        for (int i = 0; i < dArray.length; i++) {
-            for (int j = 0; j < dArray[i].length; j++) {
-                dArray[i][j] = array[k];
-                k++;
-            } // for
-        } // for
-    } // map(int[], int[][])
-
-    private void checkState() {
-        ImageView view = null;
-        for (int i = 0; i < mState.length; i++)
-            if (mState[i]) {
-                switch (i) {
-                    case BLUE:
-                        bluePeg.performClick();
-                        break;
-                    case GREEN:
-                        greenPeg.performClick();
-                        break;
-                    case RED:
-                        redPeg.performClick();
-                        break;
-                    case PURPLE:
-                        purplePeg.performClick();
-                        break;
-                    case WHITE:
-                        whitePeg.performClick();
-                        break;
-                    case YELLOW:
-                        yellowPeg.performClick();
-                        break;
-                    default:
-                        break;
-                } // switch
-                return;
-            } // if
-    } // checkState()
-
-    private boolean checkGuess(final int viewID) {
-        try {
-            for (int i = 0; i < pegSlots[mGuess].length; i++) {
-                if (pegSlots[mGuess][i] == viewID) { return true; } // if
-            } // for
-            return false;
-        } catch (final Exception e) {
-            e.printStackTrace();
-            return false;
-        } // catch
-    } // checkGuess(int)
-    
-
-    private void checkPegs() {
-        boolean check = true;
-        ImageView view = null;
-        switch (mGuess) {
-            case 0:
-                for (int i = 0; i < 4; i++)
-                    if (((ImageView) findViewById(sSlotPosition[i])).getDrawable() == null) {
-                        check = false;
-                        break;
-                    }
-                view = (ImageView) findViewById(R.id.confirm08);
-                break;
-
-            case 1:
-                for (int i = 4; i < 8; i++)
-                    if (((ImageView) findViewById(sSlotPosition[i])).getDrawable() == null) {
-                        check = false;
-                        break;
-                    }
-                view = (ImageView) findViewById(R.id.confirm07);
-                break;
-
-            case 2:
-                for (int i = 8; i < 12; i++)
-                    if (((ImageView) findViewById(sSlotPosition[i])).getDrawable() == null) {
-                        check = false;
-                        break;
-                    }
-                view = (ImageView) findViewById(R.id.confirm06);
-                break;
-
-            case 3:
-                for (int i = 12; i < 16; i++)
-                    if (((ImageView) findViewById(sSlotPosition[i])).getDrawable() == null) {
-                        check = false;
-                        break;
-                    }
-                view = (ImageView) findViewById(R.id.confirm05);
-                break;
-
-            case 4:
-                for (int i = 16; i < 20; i++)
-                    if (((ImageView) findViewById(sSlotPosition[i])).getDrawable() == null) {
-                        check = false;
-                        break;
-                    }
-                view = (ImageView) findViewById(R.id.confirm04);
-                break;
-
-            case 5:
-                for (int i = 20; i < 24; i++)
-                    if (((ImageView) findViewById(sSlotPosition[i])).getDrawable() == null) {
-                        check = false;
-                        break;
-                    }
-                view = (ImageView) findViewById(R.id.confirm03);
-                break;
-
-            case 6:
-                for (int i = 24; i < 28; i++)
-                    if (((ImageView) findViewById(sSlotPosition[i])).getDrawable() == null) {
-                        check = false;
-                        break;
-                    }
-                view = (ImageView) findViewById(R.id.confirm02);
-                break;
-
-            case 7:
-                for (int i = 28; i < 32; i++)
-                    if (((ImageView) findViewById(sSlotPosition[i])).getDrawable() == null) {
-                        check = false;
-                        break;
-                    }
-                view = (ImageView) findViewById(R.id.confirm01);
-                break;
-
-            default:
-                break;
-        } // switch
-        if (check) {
-            view.setImageDrawable(mResources.getDrawable(R.drawable.confirm));
-            view.setClickable(true);
-        } else {
-            view.setImageDrawable(mResources.getDrawable(R.drawable.row));
-            view.setClickable(false);
-        } // else
-    } // checkPegs()
-
-    public final void select(final View view) {
-        if (finished || !checkGuess(view.getId())) return;
-        for (int i = 0; i < mState.length; i++) {
-            if (mState[i]) {
-                switch (i) {
-                    case BLUE:
-                        ((ImageView) view).setImageDrawable(mResources
-                                .getDrawable(R.drawable.bluepeg));
-                        view.setTag(R.drawable.bluepeg);
-                        bluePeg.performClick();
-                        break;
-                    case RED:
-                        ((ImageView) view).setImageDrawable(mResources
-                                .getDrawable(R.drawable.redpeg));
-                        view.setTag(R.drawable.redpeg);
-                        redPeg.performClick();
-                        break;
-                    case WHITE:
-                        ((ImageView) view).setImageDrawable(mResources
-                                .getDrawable(R.drawable.whitepeg));
-                        view.setTag(R.drawable.whitepeg);
-                        whitePeg.performClick();
-                        break;
-                    case YELLOW:
-                        ((ImageView) view).setImageDrawable(mResources
-                                .getDrawable(R.drawable.yellowpeg));
-                        view.setTag(R.drawable.yellowpeg);
-                        yellowPeg.performClick();
-                        break;
-                    case GREEN:
-                        ((ImageView) view).setImageDrawable(mResources
-                                .getDrawable(R.drawable.greenpeg));
-                        view.setTag(R.drawable.greenpeg);
-                        greenPeg.performClick();
-                        break;
-                    case PURPLE:
-                        ((ImageView) view).setImageDrawable(mResources
-                                .getDrawable(R.drawable.purplepeg));
-                        view.setTag(R.drawable.purplepeg);
-                        purplePeg.performClick();
-                        break;
-                    default:
-                        break;
-                } // switch
-                checkPegs();
-                return;
-            } // if
-        } // for
-        ((ImageView) view).setImageDrawable(null);
-        view.setTag(R.drawable.pegslot);
-        checkPegs();
-    } // select(View)
-    
-
-    private int[] parseAttempt(int[] tags) {
-        final int[] attempt = new int[MAX_PEGS];
-        for (int i = 0; i < MAX_PEGS; i++) {
-            if (tags[i] == sPegs[0]) {
-                attempt[i] = sPegs[0];
-            } else if (tags[i] == sPegs[1]) {
-                attempt[i] = sPegs[1];
-            } else if (tags[i] == sPegs[2]) {
-                attempt[i] = sPegs[2];
-            } else if (tags[i] == sPegs[3]) {
-                attempt[i] = sPegs[3];
-            } else if (tags[i] == sPegs[4]) {
-                attempt[i] = sPegs[4];
-            } else if (tags[i] == sPegs[5]) {
-                attempt[i] = sPegs[5];
-            } // else
-        } // for
-        return attempt;
-    }// parseAttempt(int[])
-
-    private int[] getTags() {
-        final int[] tags = new int[MAX_PEGS];
-        for (int i = 0; i < MAX_PEGS; i++) {
-            tags[i] = (Integer) findViewById(pegSlots[mGuess][i]).getTag();
-        } // for
-        return tags;
-    } // getTags()
-
-    private static final int CORRECT_COLOUR_POSITION = 2;
-    private static final int CORRECT_COLOUR_WRONG_POSITION = 1;
-
-    private final boolean parseResponse(final int[] resp) {
-        Arrays.sort(resp);
-        for (int i = 0; i < MAX_PEGS; i++) {
-            if (resp[i] == CORRECT_COLOUR_POSITION) {
-                ((ImageView) findViewById(sSmallPegSlots[mGuess][i]))
-                        .setImageResource(R.drawable.smallred);
-            } else if (resp[i] == CORRECT_COLOUR_WRONG_POSITION) {
-                ((ImageView) findViewById(sSmallPegSlots[mGuess][i]))
-                        .setImageResource(R.drawable.smallwhite);
-            } // else
-        } // for
-          // Sorted in ascending order, therefore if first element is correct peg
-          // colour and position, all are correct
-        return resp[0] == CORRECT_COLOUR_POSITION;
-    } // parseResponse(int)
-
-    private int[] makeResponse(final boolean[] pos, final boolean[] col) {
-        final int[] resp = new int[MAX_PEGS];
-        for (int i = 0; i < MAX_PEGS; i++) {
-            // If in right position, return 2
-            if (pos[i]) {
-                resp[i] = CORRECT_COLOUR_POSITION;
-            } else {
-                // If in wrong position, return 1
-                if (col[i]) {
-                    resp[i] = CORRECT_COLOUR_WRONG_POSITION;
-                } // if
-            } // else
-        } // for
-        return resp;
-    } // makeResponse(boolean[], boolean[])
-
-    public void confirm(final View view) {
-        view.setClickable(false);
-        // Get the tags for the current guess and
-        // Parse the combination provided by the user into an array
-        final int[] attempt = parseAttempt(getTags());
-
-        // Check the attempt against the solution
-        // First check if a peg is the same colour and in the right position
-        final boolean[] pos = new boolean[MAX_PEGS], col = new boolean[MAX_PEGS];
-        for (int i = 0; i < MAX_PEGS; i++) {
-            pos[i] = mGame.checkPos(attempt[i], i);
-        } // for
-
-        // Then check if the peg is in the wrong position
-        for (int i = 0; i < MAX_PEGS; i++) {
-            if (!pos[i]) {
-                col[i] = mGame.checkPeg(attempt[i]);
-            } // if
-        } // for
-
-        // Pass the result onto the user through use of the smaller pegs
-        final boolean correct = parseResponse(makeResponse(pos, col));
-
-        mGuess++;
-        // If the attempt is correct, end the game
-        if (correct) {
-            endGame();
-            finished = true;
-        } else {
-            // Lose
-            if (mGuess == MAX_GUESSES) {
-                loseGame();
-                finished = true;
-            } else {
-                checkPegs();
-                mGame.resetStates();
-            } // else
-        } // else
-    } // confirm(View)
-
-    private boolean finished;
-
-    protected void loseGame() {
-        final Intent again = new Intent(this, this.getClass());
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("You failed to crack the code!").setCancelable(true)
-                .setNeutralButton("Try Again", new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        startActivity(again);
-                        finish();
-                    } // onClick(DialogInterface, int)
-                }).setNegativeButton("Quit to Main Menu", new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        finish();
-                    } // onClick(DialogInterface, int)
-                }).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int which) {
-                        dialog.dismiss();
-                    } // onClick(DialogInterface, int)
-                });
-        builder.create().show();
-    } // loseGame()
-
-    protected void endGame() {
-        final Intent again = new Intent(this, Mastermind.class);
-        new AlertDialog.Builder(this)
-                .setMessage("Congratulations! You cracked the code in " + mGuess + " attempts!")
-                .setCancelable(true)
-                .setNeutralButton("Start Again", new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        startActivity(again);
-                        finish();
-                    } // onClick(DialogInterface, int)
-                }).setNegativeButton("Quit to Main Menu", new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        finish();
-                    } // onClick(DialogInterface, int)
-                }).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int which) {
-                        dialog.dismiss();
-                    } // onClick(DialogInterface, int)
-                }).create().show();
-    } // endGame()
-    
-    
     
 
     private void updateViews(Percent randomPercent) {
     	Log.i("entro al rando", ""+randomPercent);
         progressBar.setCurrentValue(randomPercent);
         progressValueTextView.setText(randomPercent.asIntValue() + PERCENT_CHAR);
+    }
+    
+    public boolean compareDrawable(Drawable d1, Drawable d2){
+        try{
+            Bitmap bitmap1 = ((BitmapDrawable)d1).getBitmap();
+            ByteArrayOutputStream stream1 = new ByteArrayOutputStream();
+            bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, stream1);
+            stream1.flush();
+            byte[] bitmapdata1 = stream1.toByteArray();
+            stream1.close();
+
+            Bitmap bitmap2 = ((BitmapDrawable)d2).getBitmap();
+            ByteArrayOutputStream stream2 = new ByteArrayOutputStream();
+            bitmap2.compress(Bitmap.CompressFormat.JPEG, 100, stream2);
+            stream2.flush();
+            byte[] bitmapdata2 = stream2.toByteArray();
+            stream2.close();
+
+            return bitmapdata1.equals(bitmapdata2);
+        }
+        catch (Exception e) {
+            // TODO: handle exception
+        }
+        return false;
     }
 }
