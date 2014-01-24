@@ -11,17 +11,29 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class Mastermind extends Activity {
-
+	public static final String PERCENT_CHAR = "%";
+    public static final int MAX_PERCENT_RANDOM_VALUE = 100;
+    private VerticalProgressBar progressBar;
+    private Random random;
+    private Button randomValueButton;
+    private TextView progressValueTextView;    
+    
+    
 	// Splash screen timer
 	private static int SPLASH_TIME_OUT = 3000;
-    static final int BLUE = 0, GREEN = 1, RED = 2, WHITE = 3, YELLOW = 4, PURPLE = 5,
-            TOTAL_PEG_SLOTS = 32, MAX_PEGS = 4, MAX_GUESSES = 8;
+    static final int BLUE = 0, GREEN = 1, RED = 2, WHITE = 3, YELLOW = 4, PURPLE = 5;
+	static int TOTAL_PEG_SLOTS = 32;
+	static final int MAX_PEGS = 4;
+	static final int MAX_GUESSES = 8;
     static final int[] sPegs = { R.drawable.bluepeg, R.drawable.greenpeg, R.drawable.redpeg,
             R.drawable.whitepeg, R.drawable.yellowpeg, R.drawable.purplepeg };
     // slotPosition[] maps peg slots to view IDs
@@ -30,6 +42,8 @@ public class Mastermind extends Activity {
     protected static final int[][] pegSlots = new int[MAX_GUESSES][MAX_PEGS];
     protected static final int[][] sSmallPegSlots = new int[MAX_GUESSES][MAX_PEGS];
     public int[] confirm= new int[8];
+    public int[] guesses= new int[8];
+    public int[] feedbacks= new int[8];
 
     Engine mGame;
     int mGuess = 0;
@@ -132,6 +146,13 @@ public class Mastermind extends Activity {
         confirm[6] = R.id.confirm07;
         confirm[7] = R.id.confirm08;
 
+        random = new Random();
+
+        progressBar = (VerticalProgressBar) findViewById(R.id.acd_id_proress_bar);
+        progressValueTextView = (TextView) findViewById(R.id.acd_id_proress_value);
+        Percent randomPercent = new Percent(random.nextInt(MAX_PERCENT_RANDOM_VALUE));
+        updateViews(randomPercent);
+        
         mResources = getResources();
         // Initialise the state array
         for (int i = 0; i < mState.length; i++) {
@@ -151,26 +172,59 @@ public class Mastermind extends Activity {
         TextView console = (TextView) findViewById(R.id.consola);
         String logconsole="";
         int j=0;
+        ///Generando aletaorio en cada iteracion de los 8
         for (int i = 0; i < confirm.length; i++) {
-	        ImageView view = (ImageView) findViewById(confirm[i]);	
-	        view.setImageDrawable(mResources.getDrawable(R.drawable.confirm));
-	        logconsole+="Adivinando combinacion.... \n";
+	        /*ImageView view = (ImageView) findViewById(confirm[i]);	
+	        view.setImageDrawable(mResources.getDrawable(R.drawable.confirm));*/
+	        logconsole+="Combination guessing.... \n";
 	        j++;
-	        logconsole+="Ronda #"+j+" \n";
+	        logconsole+="Round #"+j+" \n";
 	        logconsole+="[color1, color2, color3, color4]\n";
 	        
         }
         console.setText(logconsole);
         ///randoms de las fichas
-        for (int i = 0; i < sSlotPosition.length; i++) {
+        for (int i =0; i <4; i++) {
         	create_randompeck((ImageView) findViewById(sSlotPosition[i]));		
 		}
-        ///randoms de las feedbacks
-        for (int i = 0; i < sSlotPosition.length; i++) {
-        	create_randompeck_feedback((ImageView) findViewById(sSmallSlotPosition[i]));			
+        //Bloqueando clickable a las fichas generadas
+        for (int i =0; i < sSlotPosition.length; i++) {
+            ImageView view = (ImageView) findViewById(sSlotPosition[i]);
+            view.setClickable(false);	
 		}
         
-	
+       
+        
+        
+        TOTAL_PEG_SLOTS=TOTAL_PEG_SLOTS-4;
+        //bloqueando clickable a los feeds restantes
+        for (int i = 0; i < TOTAL_PEG_SLOTS; i++) {
+            ImageView view = (ImageView) findViewById(sSmallSlotPosition[i]);
+            view.setClickable(false);
+		}
+        
+        ImageView view = (ImageView) findViewById(confirm[7]);	
+        view.setImageDrawable(mResources.getDrawable(R.drawable.confirm));
+        view.setClickable(true);
+        //findViewById(R.id.confirm08).setClickable(false);
+        
+        ///randoms de las feedbacks
+        for (int i = 0; i < sSmallSlotPosition.length; i++) {
+
+            ImageView view1 = (ImageView) findViewById(sSmallSlotPosition[i]);
+            
+            //view1.setImageDrawable(mResources.getDrawable(R.drawable.smallPeg));
+            view1.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+            
+         	create_randompeck_feedback((ImageView) findViewById(sSmallSlotPosition[i]));			
+ 		}
 
 }
 	
@@ -567,4 +621,13 @@ public void create_randompeck(ImageView view){
                     } // onClick(DialogInterface, int)
                 }).create().show();
     } // endGame()
+    
+    
+    
+
+    private void updateViews(Percent randomPercent) {
+    	Log.i("entro al rando", ""+randomPercent);
+        progressBar.setCurrentValue(randomPercent);
+        progressValueTextView.setText(randomPercent.asIntValue() + PERCENT_CHAR);
+    }
 }

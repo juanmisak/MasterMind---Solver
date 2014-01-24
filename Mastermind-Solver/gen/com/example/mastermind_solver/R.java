@@ -40,24 +40,30 @@ public final class R {
         public static final int logom=0x7f02000c;
         public static final int logopres=0x7f02000d;
         public static final int menu=0x7f02000e;
-        public static final int pegslot=0x7f02000f;
-        public static final int play=0x7f020010;
-        public static final int purplepeg=0x7f020011;
-        public static final int purplepicked=0x7f020012;
-        public static final int redpeg=0x7f020013;
-        public static final int redpicked=0x7f020014;
-        public static final int row=0x7f020015;
-        public static final int smallred=0x7f020016;
-        public static final int smallslot=0x7f020017;
-        public static final int smallwhite=0x7f020018;
-        public static final int whitepeg=0x7f020019;
-        public static final int whitepicked=0x7f02001a;
-        public static final int yellowpeg=0x7f02001b;
-        public static final int yellowpicked=0x7f02001c;
+        public static final int pb_empty=0x7f02000f;
+        public static final int pb_full=0x7f020010;
+        public static final int pegslot=0x7f020011;
+        public static final int play=0x7f020012;
+        public static final int progress_bar=0x7f020013;
+        public static final int purplepeg=0x7f020014;
+        public static final int purplepicked=0x7f020015;
+        public static final int redpeg=0x7f020016;
+        public static final int redpicked=0x7f020017;
+        public static final int row=0x7f020018;
+        public static final int smallred=0x7f020019;
+        public static final int smallslot=0x7f02001a;
+        public static final int smallwhite=0x7f02001b;
+        public static final int whitepeg=0x7f02001c;
+        public static final int whitepicked=0x7f02001d;
+        public static final int yellowpeg=0x7f02001e;
+        public static final int yellowpicked=0x7f02001f;
     }
     public static final class id {
         public static final int Logopre=0x7f090001;
-        public static final int action_settings=0x7f09005c;
+        public static final int acd_id_proress_bar=0x7f09005a;
+        public static final int acd_id_proress_value=0x7f09005b;
+        public static final int acd_poblacion=0x7f09005c;
+        public static final int action_settings=0x7f09005f;
         public static final int bluePeg=0x7f090004;
         public static final int confirm01=0x7f09001a;
         public static final int confirm02=0x7f090023;
@@ -67,7 +73,7 @@ public final class R {
         public static final int confirm06=0x7f090047;
         public static final int confirm07=0x7f090050;
         public static final int confirm08=0x7f090059;
-        public static final int consola=0x7f09005b;
+        public static final int consola=0x7f09005e;
         public static final int greenPeg=0x7f090005;
         public static final int imgLogo=0x7f090000;
         public static final int mastermindLayout=0x7f090010;
@@ -145,7 +151,7 @@ public final class R {
         public static final int smallPeg8=0x7f09001f;
         public static final int smallPeg9=0x7f090024;
         public static final int text_desripcp=0x7f090002;
-        public static final int textcon=0x7f09005a;
+        public static final int textcon=0x7f09005d;
         public static final int timer=0x7f090011;
         public static final int whitePeg=0x7f090007;
         public static final int yellowPeg=0x7f090008;
@@ -199,8 +205,10 @@ public final class R {
  Boton de ingreso (Login)  
          */
         public static final int Boton_ingreso=0x7f070004;
+        public static final int button_set_progress_value=0x7f070005;
         /**  Estilo de texto # 1  
          */
         public static final int estilo_texto_1=0x7f070001;
+        public static final int vertical_progress_bar=0x7f070006;
     }
 }
