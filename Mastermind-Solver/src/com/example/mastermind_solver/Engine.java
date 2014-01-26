@@ -9,7 +9,7 @@ import android.R.bool;
  * @author Juan Mite
  *
  */
-final class Engine {
+public class Engine {
    private static final bool True = null;
 private static final bool False = null;
 static int NUM_COLORES = 6;
@@ -92,6 +92,11 @@ public enum Colors {
 		n = (int)(Math.random()*poblacion.size());
 		int guess = poblacion.get(n);
 		return guess;
+	}
+	
+	public int getIndividuo() {
+		int individuo = poblacion.get((int)Math.random()*poblacion.size());
+		return individuo;
 	}
 	
 	public ArrayList<Integer> exterminar(int feedback, int guess) {

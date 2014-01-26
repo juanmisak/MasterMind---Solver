@@ -1,24 +1,20 @@
 package com.example.mastermind_solver;
 
 import java.io.ByteArrayOutputStream;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Random;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,7 +33,7 @@ public class Mastermind extends Activity {
     TextView console;
     String logconsole="";
 	// Splash screen timer
-	private static int SPLASH_TIME_OUT = 3000;
+	private static int SPLASH_TIME_OUT = 30;
     static final int BLUE = 0, GREEN = 1, RED = 2, WHITE = 3, YELLOW = 4, PURPLE = 5;
 	static int TOTAL_PEG_SLOTS = 32;
 	static final int MAX_PEGS = 4;
@@ -53,8 +49,12 @@ public class Mastermind extends Activity {
     public int[] guesses= new int[8];
     public int[] feedbacks= new int[8];
 
-    Engine mGame;
+
+    Engine mGame = new Engine();
     int mGuess = 0;
+    ArrayList<Integer> poblacion = mGame.crearPoblacion();
+    int poblacion_inicial = mGame.poblacion.size();
+    
     Resources mResources;
     // state[] shows which colour peg has been selected
     boolean[] mState = new boolean[Engine.NUM_COLORES];
@@ -67,30 +67,37 @@ public class Mastermind extends Activity {
         sSlotPosition[2] = R.id.peg31;
         sSlotPosition[1] = R.id.peg30;
         sSlotPosition[0] = R.id.peg29;
+        
         sSlotPosition[7] = R.id.peg28;
         sSlotPosition[6] = R.id.peg27;
         sSlotPosition[5] = R.id.peg26;
         sSlotPosition[4] = R.id.peg25;
+        
         sSlotPosition[11] = R.id.peg24;
         sSlotPosition[10] = R.id.peg23;
         sSlotPosition[9] = R.id.peg22;
         sSlotPosition[8] = R.id.peg21;
+        
         sSlotPosition[15] = R.id.peg20;
         sSlotPosition[14] = R.id.peg19;
         sSlotPosition[13] = R.id.peg18;
         sSlotPosition[12] = R.id.peg17;
+        
         sSlotPosition[19] = R.id.peg16;
         sSlotPosition[18] = R.id.peg15;
         sSlotPosition[17] = R.id.peg14;
         sSlotPosition[16] = R.id.peg13;
+        
         sSlotPosition[23] = R.id.peg12;
         sSlotPosition[22] = R.id.peg11;
         sSlotPosition[21] = R.id.peg10;
         sSlotPosition[20] = R.id.peg09;
+        
         sSlotPosition[27] = R.id.peg08;
         sSlotPosition[26] = R.id.peg07;
         sSlotPosition[25] = R.id.peg06;
         sSlotPosition[24] = R.id.peg05;
+        
         sSlotPosition[31] = R.id.peg04;
         sSlotPosition[30] = R.id.peg03;
         sSlotPosition[29] = R.id.peg02;
@@ -155,7 +162,9 @@ public class Mastermind extends Activity {
         confirm[7] = R.id.confirm08;
 
         random = new Random();
+        
 
+        
         progressBar = (VerticalProgressBar) findViewById(R.id.acd_id_proress_bar);
         progressValueTextView = (TextView) findViewById(R.id.acd_id_proress_value);
         
@@ -260,10 +269,17 @@ public class Mastermind extends Activity {
 				});
 		}
 
-     	//create_randompeck_feedback((ImageView) findViewById(sSmallSlotPosition[i]));			
+     	//create_randompeck_feedback((ImageView) findViewById	(sSmallSlotPosition[i]));			
 }
 public void generar_sigFichas(){
-	Percent randomPercent = new Percent(random.nextInt(MAX_PERCENT_RANDOM_VALUE));
+	for(int s=0;s<150;s++)
+	poblacion.remove(34);
+	double x = ((double)poblacion.size()/(double)poblacion_inicial);
+	Percent randomPercent = new Percent((int)(x*100));
+	String m=Integer.toString(poblacion.size());
+	console.setText(m);
+	String t=Integer.toString(poblacion_inicial);
+	console.setText(t);
 	if(jtuca==1){
 		updateViews(new Percent(100));
 	}else{
@@ -278,7 +294,7 @@ public void generar_sigFichas(){
     	ituca++;
 	}
 
-    logconsole+="["+acolor[0]+","+acolor[1]+","+acolor[2]+","+acolor[3]+"]\n";
+    logconsole+="["+acolor[0]+","+acolor[1]+","+acolor[2]+","+acolor[3]+ "]  poblacion: " + poblacion.size()+ "/n";
 
 }
 public void create_randompeck_feedback(ImageView view){
