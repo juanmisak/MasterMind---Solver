@@ -95,7 +95,8 @@ public enum Colors {
 	}
 	
 	public int getIndividuo() {
-		int individuo = poblacion.get((int)Math.random()*poblacion.size());
+		int individuo =(int)((float)(Math.random())*poblacion.size());
+		
 		return individuo;
 	}
 	

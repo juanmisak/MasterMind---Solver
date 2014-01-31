@@ -19,6 +19,25 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/*  ===========================================
+ *  Combinacion colores FICHAS a enteros:
+ *  ===========================================
+ *  celeste 	= 0
+ *  verde 		= 1
+ *  rojo 		= 2
+ *  blanco 		= 3
+ *  amarillo 	= 4
+ *  morado 		= 5
+ *  [abcd,abcd,abcd,abcd,abcd,abcd,abcd,abcd]*/
+ /*
+ *  ============================================
+ *  Combinacion colores FEEDBACKS a enteros:
+ *  ============================================
+ *  negra 		= a  
+ *  gris 		= b
+ *  [ab,ab,ab,ab,ab,ab,ab,ab]
+ */
+
 public class Mastermind extends Activity {
 	public static final String PERCENT_CHAR = "%";
     public static final int MAX_PERCENT_RANDOM_VALUE = 100;
@@ -29,6 +48,9 @@ public class Mastermind extends Activity {
     
     int ituca=0;
     int jtuca=0;
+    
+    int ktuca=0; //variable para contar los feedback
+    
     int confirt=7;
     TextView console;
     String logconsole="";
@@ -163,8 +185,6 @@ public class Mastermind extends Activity {
 
         random = new Random();
         
-
-        
         progressBar = (VerticalProgressBar) findViewById(R.id.acd_id_proress_bar);
         progressValueTextView = (TextView) findViewById(R.id.acd_id_proress_value);
         
@@ -183,11 +203,9 @@ public class Mastermind extends Activity {
         purplePeg = (ImageView) findViewById(R.id.purplePeg);
 
         findViewById(R.id.confirm08).setClickable(false);
-        
 
         console = (TextView) findViewById(R.id.consola);
         ///Generando aletaorio en cada iteracion de los 8
-
 
         jtuca++;
         logconsole+="Combination guessing.... \n";   	
@@ -216,7 +234,6 @@ public class Mastermind extends Activity {
         view.setImageDrawable(mResources.getDrawable(R.drawable.confirm));
         view.setClickable(true);
         
-        //findViewById(R.id.confirm08).setClickable(false);
         
         ///randoms de las feedbacks
         for ( int i = 0; i < sSmallSlotPosition.length; i++) {
@@ -259,9 +276,27 @@ public class Mastermind extends Activity {
 						confirt--;
 						v1.setImageDrawable(mResources.getDrawable(R.drawable.confirm));
 						v1.setClickable(true);
-						//////////escribiendo en consola
-
-				        jtuca++;
+						
+						////obteniendo feedbacks
+					    int negras=0;
+					    int grises=0;
+					    for (int i =0; i <4; i++) {
+					    	ImageView ficha= (ImageView) findViewById(sSmallSlotPosition[ktuca]);
+					    	Drawable drficha=ficha.getDrawable();
+					    	if(drficha!=null){
+					    		if(drficha.getConstantState().equals( mResources.getDrawable(R.drawable.black_peck).getConstantState())){
+						    		negras++;
+						    	}else if(drficha.getConstantState().equals( mResources.getDrawable(R.drawable.grey_peck).getConstantState())){
+						    		grises++;
+						    	}
+					    	}
+					    	
+					    	ktuca++;
+						}
+					    String feedback= String.valueOf(negras)+""+String.valueOf(grises);
+					    feedbacks[jtuca]=Integer.parseInt(feedback);
+				        logconsole+="["+feedback+", color2, color3, color4]\n";
+					    
 				        //logconsole+="[color1, color2, color3, color4]\n";
 				        console.setText(logconsole);
 					}
@@ -271,32 +306,84 @@ public class Mastermind extends Activity {
 
      	//create_randompeck_feedback((ImageView) findViewById	(sSmallSlotPosition[i]));			
 }
+	
 public void generar_sigFichas(){
-	for(int s=0;s<150;s++)
-	poblacion.remove(34);
-	double x = ((double)poblacion.size()/(double)poblacion_inicial);
-	Percent randomPercent = new Percent((int)(x*100));
-	String m=Integer.toString(poblacion.size());
-	console.setText(m);
-	String t=Integer.toString(poblacion_inicial);
-	console.setText(t);
-	if(jtuca==1){
-		updateViews(new Percent(100));
-	}else{
+	//for(int s=0;s<150;s++)
+	//poblacion.remove(34);
+		double x = ((double) poblacion.size() / (double) poblacion_inicial);
+		Percent randomPercent = new Percent((int) (x * 100));
+		String m = Integer.toString(poblacion.size());
+		console.setText(m);
+		String t = Integer.toString(poblacion_inicial);
+		console.setText(t);
+		if (jtuca == 1) {
+			updateViews(new Percent(100));
+		} else {
+			updateViews(randomPercent);
+		}
 		updateViews(randomPercent);
-	}
-    updateViews(randomPercent);
-    String[] acolor=new String[4];
-    ///randoms de las fichas
-    for (int i =0; i <4; i++) {
-    	String Color=create_randompeck((ImageView) findViewById(sSlotPosition[ituca]));	
-    	acolor[i]=Color;
-    	ituca++;
-	}
+		String[] acolor = new String[4];
+		int individuo = mGame.getIndividuo();
+		console.setText("valro del individuo" + individuo);
+		guesses[jtuca] = individuo;
+		Log.i("valro del INDIVIDUOo", "valro del individuo" + individuo);
+		
+		// / parte el enteros en digitos
+		int[] digitos = { 0, 0, 0, 0 };
+		int contadortotal = 3;
 
+		while (individuo > 0) {
+			digitos[contadortotal--] = individuo % 10;
+			individuo /= 10;
+		}
+
+		// /randoms de las fichas
+		for (int i = 0; i < 4; i++) {
+			String Color = create_randompeck(
+					(ImageView) findViewById(sSlotPosition[ituca]), digitos[i]);
+			// String Color=insert_randompeck((ImageView)
+			// findViewById(sSlotPosition[ituca]));
+			acolor[i] = Color;
+			ituca++;
+		}
+    
     logconsole+="["+acolor[0]+","+acolor[1]+","+acolor[2]+","+acolor[3]+ "]  poblacion: " + poblacion.size()+ "/n";
-
 }
+
+public String insert_randompeck(ImageView view){
+	
+	String color="";
+	int randInt = new Random().nextInt(5);
+	 switch (randInt) {
+     case 0:
+         view.setImageDrawable(mResources.getDrawable(R.drawable.bluepeg));
+         color="blue";
+         break;
+     case 1:
+         view.setImageDrawable(mResources.getDrawable(R.drawable.greenpeg));
+         color="green";
+         break;
+     case 2:
+         view.setImageDrawable(mResources.getDrawable(R.drawable.redpeg));
+         color="red";
+     case 3:
+         view.setImageDrawable(mResources.getDrawable(R.drawable.purplepeg));
+         color="purple";
+         break;
+     case 4:
+         view.setImageDrawable(mResources.getDrawable(R.drawable.whitepeg));
+         color="white";
+     case 5:
+         view.setImageDrawable(mResources.getDrawable(R.drawable.yellowpeg));
+         color="yellow";
+         break;
+     default:
+         break;
+	 }
+	 
+	 return color;
+}
+
 public void create_randompeck_feedback(ImageView view){
 	
 
@@ -313,30 +400,29 @@ public void create_randompeck_feedback(ImageView view){
 	 }
 }
 
-public String create_randompeck(ImageView view){
+public String create_randompeck(ImageView view,Integer randInt){
 	
 	String color="";
-	int randInt = new Random().nextInt(6) + 1;
 	 switch (randInt) {
-     case 1:
+     case 0:
          view.setImageDrawable(mResources.getDrawable(R.drawable.bluepeg));
          color="blue";
          break;
-     case 2:
+     case 1:
          view.setImageDrawable(mResources.getDrawable(R.drawable.greenpeg));
          color="green";
          break;
-     case 3:
+     case 2:
          view.setImageDrawable(mResources.getDrawable(R.drawable.redpeg));
          color="red";
-     case 4:
+     case 3:
          view.setImageDrawable(mResources.getDrawable(R.drawable.purplepeg));
          color="purple";
          break;
-     case 5:
+     case 4:
          view.setImageDrawable(mResources.getDrawable(R.drawable.whitepeg));
          color="white";
-     case 6:
+     case 5:
          view.setImageDrawable(mResources.getDrawable(R.drawable.yellowpeg));
          color="yellow";
          break;
