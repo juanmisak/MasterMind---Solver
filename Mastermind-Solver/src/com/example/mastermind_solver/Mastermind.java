@@ -347,7 +347,7 @@ public void generar_sigFichas(){
 			ituca++;
 		}
     
-    logconsole+="["+acolor[0]+","+acolor[1]+","+acolor[2]+","+acolor[3]+ "]  poblacion: " + poblacion.size()+ "/n";
+    logconsole+="["+acolor[0]+","+acolor[1]+","+acolor[2]+","+acolor[3]+ "]  poblacion: " + poblacion.size()+"\n"+mGame.getIndividuo() +"/n";
 }
 
 public String insert_randompeck(ImageView view){
