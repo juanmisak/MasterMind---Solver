@@ -324,6 +324,13 @@ public void generar_sigFichas(){
 		updateViews(randomPercent);
 		String[] acolor = new String[4];
 		int individuo = mGame.getIndividuo();
+		int n=individuo;
+		int numdigitos= 0;    //esta variable es el contador de dígitos
+        while(n!=0){             //mientras a n le queden dígitos
+        	n = n/10;         //le quitamos el último dígito
+        	numdigitos++;          //sumamos 1 al contador de dígitos
+        }
+        
 		console.setText("valro del individuo" + individuo);
 		guesses[jtuca] = individuo;
 		Log.i("valro del INDIVIDUOo", "valro del individuo" + individuo);
@@ -331,7 +338,7 @@ public void generar_sigFichas(){
 		// / parte el enteros en digitos
 		int[] digitos = { 0, 0, 0, 0 };
 		int contadortotal = 3;
-
+		
 		while (individuo > 0) {
 			digitos[contadortotal--] = individuo % 10;
 			individuo /= 10;
@@ -339,11 +346,16 @@ public void generar_sigFichas(){
 
 		// /randoms de las fichas
 		for (int i = 0; i < 4; i++) {
-			String Color = create_randompeck(
-					(ImageView) findViewById(sSlotPosition[ituca]), digitos[i]);
+			String Color;
+			if(numdigitos==3&&i==0){
+				Color= create_randompeck((ImageView) findViewById(sSlotPosition[ituca]), 0);	
+				acolor[i] = Color;			
+			}else{
+				Color = create_randompeck((ImageView) findViewById(sSlotPosition[ituca]), digitos[i]);
+				acolor[i] = Color;
+			}
 			// String Color=insert_randompeck((ImageView)
 			// findViewById(sSlotPosition[ituca]));
-			acolor[i] = Color;
 			ituca++;
 		}
     
