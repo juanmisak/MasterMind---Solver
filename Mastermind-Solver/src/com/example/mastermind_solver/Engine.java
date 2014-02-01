@@ -12,8 +12,6 @@ import android.R.bool;
  *
  */
 public class Engine {
-   private static final bool True = null;
-private static final bool False = null;
 static int NUM_COLORES = 6;
 
 public enum Colors {
@@ -81,8 +79,8 @@ public enum Colors {
 		return guessMuted;
 	}
 	
-	public boolean allBlack(int feedbacks){
-		if(getScore(feedbacks) == 14)
+	public boolean allBlack(int feedback){
+		if(feedback == 40)
 			return true;
 		else
 			return false;
@@ -102,12 +100,12 @@ public enum Colors {
 		return individuo;
 	}
 	
-	public ArrayList<Integer> exterminar(int[] feedback, int[] guess, int index) {
+	public ArrayList<Integer> exterminar(int feedback, int guess) {
 		
-		if (getScore(feedback[index]) == 0){
-			killAll(guess[index]);
-		if(getScore(feedback[index])>=14)
-			killComplement(guess[index]);
+		if (getScore(feedback) == 0){
+			killAll(guess);
+		if(getScore(feedback)>=14)
+			killComplement(guess);
 		
 		}
 		

@@ -49,6 +49,7 @@ public class Mastermind extends Activity {
     
     int ituca=0;
     int jtuca=0;
+    int index=0;
     int ktuca=0;
 
     int contador_guesses=0; //variable para contar los feedback
@@ -166,12 +167,7 @@ public class Mastermind extends Activity {
         map(sSmallSlotPosition, sSmallPegSlots);*/
     }
 
-    private ImageView bluePeg;
-    private ImageView greenPeg;
-    private ImageView redPeg;
-    private ImageView whitePeg;
-    private ImageView yellowPeg;
-    private ImageView purplePeg;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -198,12 +194,7 @@ public class Mastermind extends Activity {
             mState[i] = false;
         } // for
 
-        bluePeg = (ImageView) findViewById(R.id.bluePeg);
-        greenPeg = (ImageView) findViewById(R.id.greenPeg);
-        redPeg = (ImageView) findViewById(R.id.redPeg);
-        whitePeg = (ImageView) findViewById(R.id.whitePeg);
-        yellowPeg = (ImageView) findViewById(R.id.yellowPeg);
-        purplePeg = (ImageView) findViewById(R.id.purplePeg);
+
 
         findViewById(R.id.confirm08).setClickable(false);
 
@@ -214,9 +205,10 @@ public class Mastermind extends Activity {
         logconsole+="Combination guessing.... \n";   	
         logconsole+="Round #"+jtuca+" \n";
 
+        
 		guesses[contador_guesses] = generar_sigFichas();
         console.setText(logconsole);
-        
+        contador_guesses++;
         //Bloqueando clickable a las fichas generadas
         for (int i =0; i < sSlotPosition.length; i++) {
             ImageView view = (ImageView) findViewById(sSlotPosition[i]);
@@ -273,7 +265,10 @@ public class Mastermind extends Activity {
 				public void onClick(View v) {
 					v.setClickable(false);
 					if(confirt>=0){				 
-				        logconsole+="Guessing.... \n";   	
+				    	
+						jtuca++;
+				        logconsole+="Combination guessing.... \n";   	
+
 				        logconsole+="Round # "+jtuca+" \n";
 
 						guesses[contador_guesses] = generar_sigFichas();
@@ -282,7 +277,7 @@ public class Mastermind extends Activity {
 						v1.setImageDrawable(mResources.getDrawable(R.drawable.confirm));
 						v1.setClickable(true);
 						
-						////obteniendo feedbacks
+						
 					    int negras=0;
 					    int grises=0;
 					    for (int l =0; l <4; l++) {
@@ -300,11 +295,16 @@ public class Mastermind extends Activity {
 						}
 					    String feedback= String.valueOf(negras)+""+String.valueOf(grises);
 					    feedbacks[contador_feedbacks]=Integer.parseInt(feedback);
-				        logconsole+="["+feedback+"]";
-					    
-				        //logconsole+="[color1, color2, color3, color4]\n";
-				        console.setText(logconsole);					    	
-				    	jtuca++;
+					    int g= feedbacks[index-1];
+				        
+					    logconsole+=  guesses[0]+"-"+guesses[1]+"-"+guesses[2]+"-"+guesses[3]+"-"+
+					  			  guesses[4]+"-"+guesses[5]+"-"+guesses[6]+"-"+guesses[7]+"\n"+
+					  		      feedbacks[0]+"-"+feedbacks[1]+"-"+feedbacks[2]+"-"+feedbacks[3]+"-"+feedbacks[4]+"-"+
+					  		      feedbacks[5]+"-"+feedbacks[6]+"-"+feedbacks[7]+"\n"+ "Hay: "+poblacion.size()+" individuos en la población"+"\n------->"
+					  		      +g+"--"+index+"\n";
+						//poblacion=mGame.exterminar(feedbacks[jtuca-1], guesses[jtuca-1]);
+						
+						console.setText(logconsole);
 				    	contador_guesses++;
 				    	contador_feedbacks++;
 				    	
@@ -344,6 +344,7 @@ public int generar_sigFichas(){
 		// / parte el enteros en digitos
 		int[] digitos = { 0, 0, 0, 0 };
 		int contadortotal = 3;
+		
 
 		while (individuo > 0) {
 			digitos[contadortotal--] = individuo % 10;
@@ -359,18 +360,20 @@ public int generar_sigFichas(){
 			acolor[i] = Color;
 			ituca++;
 		}
-		logconsole+=  guesses[0]+"-"+guesses[1]+"-"+guesses[2]+"-"+guesses[3]+"-"+
+
+		/*logconsole+=  guesses[0]+"-"+guesses[1]+"-"+guesses[2]+"-"+guesses[3]+"-"+
 	  			  guesses[4]+"-"+guesses[5]+"-"+guesses[6]+"-"+guesses[7]+"\n"+
 	  		      feedbacks[0]+"-"+feedbacks[1]+"-"+feedbacks[2]+"-"+feedbacks[3]+"-"+feedbacks[4]+"-"+
-	  		      feedbacks[5]+"-"+feedbacks[6]+"-"+feedbacks[7]+"\n"+ "Hay: "+poblacion.size()+" individuos en la población"+"\n";
+	  		      feedbacks[5]+"-"+feedbacks[6]+"-"+feedbacks[7]+"\n"+ "Hay: "+poblacion.size()+" individuos en la población"+"\n------->"
+	  		      +jtuca+"\n"; */
 		
-		//poblacion=mGame.exterminar(feedbacks, guesses);
-		if(mGame.allBlack(feedbacks[jtuca])){
-			Toast toast = Toast.makeText(this, "Fin del juego su conbinación es"+guesses[jtuca], 6000);
+		if(feedbacks[index]==40){
+			Toast toast = Toast.makeText(this, "Fin del juego su combinación es"+guesses[jtuca], 6000);
         	toast.show(); 
         	}
-
+		index++;
 		
+
     return fichas_gen;
 }
 
@@ -391,15 +394,16 @@ public String insert_randompeck(ImageView view){
          view.setImageDrawable(mResources.getDrawable(R.drawable.redpeg));
          color="red";
      case 3:
-         view.setImageDrawable(mResources.getDrawable(R.drawable.purplepeg));
-         color="purple";
-         break;
-     case 4:
          view.setImageDrawable(mResources.getDrawable(R.drawable.whitepeg));
          color="white";
-     case 5:
+         break;
+     case 4:
          view.setImageDrawable(mResources.getDrawable(R.drawable.yellowpeg));
          color="yellow";
+     case 5:
+         view.setImageDrawable(mResources.getDrawable(R.drawable.purplepeg));
+         color="purple";
+     
          break;
      default:
          break;
@@ -440,15 +444,15 @@ public String create_randompeck(ImageView view,Integer randInt){
          view.setImageDrawable(mResources.getDrawable(R.drawable.redpeg));
          color="red";
      case 3:
-         view.setImageDrawable(mResources.getDrawable(R.drawable.purplepeg));
-         color="purple";
-         break;
-     case 4:
          view.setImageDrawable(mResources.getDrawable(R.drawable.whitepeg));
          color="white";
-     case 5:
+         break;
+     case 4:
          view.setImageDrawable(mResources.getDrawable(R.drawable.yellowpeg));
          color="yellow";
+     case 5:
+         view.setImageDrawable(mResources.getDrawable(R.drawable.purplepeg));
+         color="purple";
          break;
      default:
          break;
