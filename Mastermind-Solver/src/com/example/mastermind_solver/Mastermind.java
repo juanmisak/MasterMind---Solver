@@ -18,6 +18,7 @@ import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /*  ===========================================
  *  Combinacion colores FICHAS a enteros:
@@ -272,7 +273,7 @@ public class Mastermind extends Activity {
 				public void onClick(View v) {
 					v.setClickable(false);
 					if(confirt>=0){				 
-				        logconsole+="Combination guessing.... \n";   	
+				        logconsole+="Guessing.... \n";   	
 				        logconsole+="Round # "+jtuca+" \n";
 
 						guesses[contador_guesses] = generar_sigFichas();
@@ -361,10 +362,14 @@ public int generar_sigFichas(){
 		logconsole+=  guesses[0]+"-"+guesses[1]+"-"+guesses[2]+"-"+guesses[3]+"-"+
 	  			  guesses[4]+"-"+guesses[5]+"-"+guesses[6]+"-"+guesses[7]+"\n"+
 	  		      feedbacks[0]+"-"+feedbacks[1]+"-"+feedbacks[2]+"-"+feedbacks[3]+"-"+feedbacks[4]+"-"+
-	  		      feedbacks[5]+"-"+feedbacks[6]+"-"+feedbacks[7]+"\n"+ "Hay: "+poblacion.size()+"individuos en la población"+"\n";
+	  		      feedbacks[5]+"-"+feedbacks[6]+"-"+feedbacks[7]+"\n"+ "Hay: "+poblacion.size()+" individuos en la población"+"\n";
 		
-		poblacion=mGame.exterminar(feedbacks[jtuca], guesses[jtuca]);
-		
+		//poblacion=mGame.exterminar(feedbacks, guesses);
+		if(mGame.allBlack(feedbacks[jtuca])){
+			Toast toast = Toast.makeText(this, "Fin del juego su conbinación es"+guesses[jtuca], 6000);
+        	toast.show(); 
+        	}
+
 		
     return fichas_gen;
 }

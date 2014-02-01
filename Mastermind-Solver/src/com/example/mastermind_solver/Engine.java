@@ -1,9 +1,11 @@
 package com.example.mastermind_solver;
 
 import java.util.ArrayList;
+import android.widget.Toast;
 import java.util.ListIterator;
 
 import android.R.bool;
+
 /**
  *
  * @author Juan Mite
@@ -79,11 +81,11 @@ public enum Colors {
 		return guessMuted;
 	}
 	
-	public bool allBlack(int guess){
-		if(getScore(guess)== 14)
-			return True;
+	public boolean allBlack(int feedbacks){
+		if(getScore(feedbacks) == 14)
+			return true;
 		else
-			return False;
+			return false;
 	}
 	
 	
@@ -100,11 +102,13 @@ public enum Colors {
 		return individuo;
 	}
 	
-	public ArrayList<Integer> exterminar(int feedback, int guess) {
+	public ArrayList<Integer> exterminar(int[] feedback, int[] guess, int index) {
 		
-		if (getScore(feedback) == 0){
-			killAll(guess);
-			
+		if (getScore(feedback[index]) == 0){
+			killAll(guess[index]);
+		if(getScore(feedback[index])>=14)
+			killComplement(guess[index]);
+		
 		}
 		
 		return poblacion;
