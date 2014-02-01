@@ -213,9 +213,10 @@ public class Mastermind extends Activity {
         logconsole+="Combination guessing.... \n";   	
         logconsole+="Round #"+jtuca+" \n";
 
+        
 		guesses[contador_guesses] = generar_sigFichas();
         console.setText(logconsole);
-        
+        contador_guesses++;
         //Bloqueando clickable a las fichas generadas
         for (int i =0; i < sSlotPosition.length; i++) {
             ImageView view = (ImageView) findViewById(sSlotPosition[i]);
@@ -272,6 +273,8 @@ public class Mastermind extends Activity {
 				public void onClick(View v) {
 					v.setClickable(false);
 					if(confirt>=0){				 
+				    	
+						jtuca++;
 				        logconsole+="Combination guessing.... \n";   	
 				        logconsole+="Round # "+jtuca+" \n";
 
@@ -299,11 +302,17 @@ public class Mastermind extends Activity {
 						}
 					    String feedback= String.valueOf(negras)+""+String.valueOf(grises);
 					    feedbacks[contador_feedbacks]=Integer.parseInt(feedback);
+				        
+				        logconsole+=  guesses[0]+"-"+guesses[1]+"-"+guesses[2]+"-"+guesses[3]+"-"+
+					  			  guesses[4]+"-"+guesses[5]+"-"+guesses[6]+"-"+guesses[7]+"\n"+
+					  		      feedbacks[0]+"-"+feedbacks[1]+"-"+feedbacks[2]+"-"+feedbacks[3]+"-"+feedbacks[4]+"-"+
+					  		      feedbacks[5]+"-"+feedbacks[6]+"-"+feedbacks[7]+"\n"+ "Hay: "+poblacion.size()+"individuos en la población"+"\n";
 				        logconsole+="["+feedback+"]";
 					    
+						poblacion=mGame.exterminar(feedbacks[contador_feedbacks], guesses[contador_guesses]);
+						
 				        //logconsole+="[color1, color2, color3, color4]\n";
-				        console.setText(logconsole);					    	
-				    	jtuca++;
+				        console.setText(logconsole);
 				    	contador_guesses++;
 				    	contador_feedbacks++;
 				    	
@@ -358,12 +367,6 @@ public int generar_sigFichas(){
 			acolor[i] = Color;
 			ituca++;
 		}
-		logconsole+=  guesses[0]+"-"+guesses[1]+"-"+guesses[2]+"-"+guesses[3]+"-"+
-	  			  guesses[4]+"-"+guesses[5]+"-"+guesses[6]+"-"+guesses[7]+"\n"+
-	  		      feedbacks[0]+"-"+feedbacks[1]+"-"+feedbacks[2]+"-"+feedbacks[3]+"-"+feedbacks[4]+"-"+
-	  		      feedbacks[5]+"-"+feedbacks[6]+"-"+feedbacks[7]+"\n"+ "Hay: "+poblacion.size()+"individuos en la población"+"\n";
-		
-		poblacion=mGame.exterminar(feedbacks[jtuca], guesses[jtuca]);
 		
 		
     return fichas_gen;
@@ -435,15 +438,15 @@ public String create_randompeck(ImageView view,Integer randInt){
          view.setImageDrawable(mResources.getDrawable(R.drawable.redpeg));
          color="red";
      case 3:
-         view.setImageDrawable(mResources.getDrawable(R.drawable.purplepeg));
-         color="purple";
-         break;
-     case 4:
          view.setImageDrawable(mResources.getDrawable(R.drawable.whitepeg));
          color="white";
-     case 5:
+         break;
+     case 4:
          view.setImageDrawable(mResources.getDrawable(R.drawable.yellowpeg));
          color="yellow";
+     case 5:
+         view.setImageDrawable(mResources.getDrawable(R.drawable.purplepeg));
+         color="purple";
          break;
      default:
          break;
