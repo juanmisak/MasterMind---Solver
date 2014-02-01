@@ -48,8 +48,10 @@ public class Mastermind extends Activity {
     
     int ituca=0;
     int jtuca=0;
-    
-    int ktuca=0; //variable para contar los feedback
+    int ktuca=0;
+
+    int contador_guesses=0; //variable para contar los feedback
+    int contador_feedbacks=0; //variable para contar los feedback
     
     int confirt=7;
     TextView console;
@@ -210,7 +212,8 @@ public class Mastermind extends Activity {
         jtuca++;
         logconsole+="Combination guessing.... \n";   	
         logconsole+="Round #"+jtuca+" \n";
-        generar_sigFichas();
+
+		guesses[contador_guesses] = generar_sigFichas();
         console.setText(logconsole);
         
         //Bloqueando clickable a las fichas generadas
@@ -270,8 +273,9 @@ public class Mastermind extends Activity {
 					v.setClickable(false);
 					if(confirt>=0){				 
 				        logconsole+="Combination guessing.... \n";   	
-				        logconsole+="Round #"+jtuca+" \n";
-						generar_sigFichas();
+				        logconsole+="Round # "+jtuca+" \n";
+
+						guesses[contador_guesses] = generar_sigFichas();
 						ImageView v1 = (ImageView) findViewById(confirm[confirt]);
 						confirt--;
 						v1.setImageDrawable(mResources.getDrawable(R.drawable.confirm));
@@ -280,7 +284,7 @@ public class Mastermind extends Activity {
 						////obteniendo feedbacks
 					    int negras=0;
 					    int grises=0;
-					    for (int i =0; i <4; i++) {
+					    for (int l =0; l <4; l++) {
 					    	ImageView ficha= (ImageView) findViewById(sSmallSlotPosition[ktuca]);
 					    	Drawable drficha=ficha.getDrawable();
 					    	if(drficha!=null){
@@ -294,11 +298,23 @@ public class Mastermind extends Activity {
 					    	ktuca++;
 						}
 					    String feedback= String.valueOf(negras)+""+String.valueOf(grises);
-					    feedbacks[jtuca]=Integer.parseInt(feedback);
-				        logconsole+="["+feedback+", color2, color3, color4]\n";
+					    feedbacks[contador_feedbacks]=Integer.parseInt(feedback);
+				        logconsole+="["+feedback+"]";
 					    
 				        //logconsole+="[color1, color2, color3, color4]\n";
-				        console.setText(logconsole);
+				        console.setText(logconsole);					    	
+				    	jtuca++;
+				    	contador_guesses++;
+				    	contador_feedbacks++;
+				    	
+				    	for (int h = 0; h < feedbacks.length; h++) {
+					    	Log.i("MUESTRA FEEDBACKS", ""+feedbacks[h]);
+							
+						}
+				    	for (int h = 0; h < guesses.length; h++) {
+					    	Log.i("MUESTRA GUESSES", ""+guesses[h]);
+							
+						}
 					}
 					}
 				});
@@ -307,9 +323,7 @@ public class Mastermind extends Activity {
      	//create_randompeck_feedback((ImageView) findViewById	(sSmallSlotPosition[i]));			
 }
 	
-public void generar_sigFichas(){
-	//for(int s=0;s<150;s++)
-	//poblacion.remove(34);
+public int generar_sigFichas(){
 		double x = ((double) poblacion.size() / (double) poblacion_inicial);
 		Percent randomPercent = new Percent((int) (x * 100));
 		String m = Integer.toString(poblacion.size());
@@ -324,21 +338,12 @@ public void generar_sigFichas(){
 		updateViews(randomPercent);
 		String[] acolor = new String[4];
 		int individuo = mGame.getIndividuo();
-		int n=individuo;
-		int numdigitos= 0;    //esta variable es el contador de dígitos
-        while(n!=0){             //mientras a n le queden dígitos
-        	n = n/10;         //le quitamos el último dígito
-        	numdigitos++;          //sumamos 1 al contador de dígitos
-        }
-        
-		console.setText("valro del individuo" + individuo);
-		guesses[jtuca] = individuo;
-		Log.i("valro del INDIVIDUOo", "valro del individuo" + individuo);
+		int fichas_gen=individuo;
 		
 		// / parte el enteros en digitos
 		int[] digitos = { 0, 0, 0, 0 };
 		int contadortotal = 3;
-		
+
 		while (individuo > 0) {
 			digitos[contadortotal--] = individuo % 10;
 			individuo /= 10;
@@ -346,20 +351,22 @@ public void generar_sigFichas(){
 
 		// /randoms de las fichas
 		for (int i = 0; i < 4; i++) {
-			String Color;
-			if(numdigitos==3&&i==0){
-				Color= create_randompeck((ImageView) findViewById(sSlotPosition[ituca]), 0);	
-				acolor[i] = Color;			
-			}else{
-				Color = create_randompeck((ImageView) findViewById(sSlotPosition[ituca]), digitos[i]);
-				acolor[i] = Color;
-			}
+			String Color = create_randompeck(
+					(ImageView) findViewById(sSlotPosition[ituca]), digitos[i]);
 			// String Color=insert_randompeck((ImageView)
 			// findViewById(sSlotPosition[ituca]));
+			acolor[i] = Color;
 			ituca++;
 		}
-    
-    logconsole+="["+acolor[0]+","+acolor[1]+","+acolor[2]+","+acolor[3]+ "]  poblacion: " + poblacion.size()+"\n"+mGame.getIndividuo() +"/n";
+		logconsole+=  guesses[0]+"-"+guesses[1]+"-"+guesses[2]+"-"+guesses[3]+"-"+
+	  			  guesses[4]+"-"+guesses[5]+"-"+guesses[6]+"-"+guesses[7]+"\n"+
+	  		      feedbacks[0]+"-"+feedbacks[1]+"-"+feedbacks[2]+"-"+feedbacks[3]+"-"+feedbacks[4]+"-"+
+	  		      feedbacks[5]+"-"+feedbacks[6]+"-"+feedbacks[7]+"\n"+ "Hay: "+poblacion.size()+"individuos en la población"+"\n";
+		
+		poblacion=mGame.exterminar(feedbacks[jtuca], guesses[jtuca]);
+		
+		
+    return fichas_gen;
 }
 
 public String insert_randompeck(ImageView view){
