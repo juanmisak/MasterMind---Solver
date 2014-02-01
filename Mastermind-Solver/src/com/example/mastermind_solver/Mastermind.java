@@ -371,41 +371,6 @@ public int generar_sigFichas(){
 		
     return fichas_gen;
 }
-
-public String insert_randompeck(ImageView view){
-	
-	String color="";
-	int randInt = new Random().nextInt(5);
-	 switch (randInt) {
-     case 0:
-         view.setImageDrawable(mResources.getDrawable(R.drawable.bluepeg));
-         color="blue";
-         break;
-     case 1:
-         view.setImageDrawable(mResources.getDrawable(R.drawable.greenpeg));
-         color="green";
-         break;
-     case 2:
-         view.setImageDrawable(mResources.getDrawable(R.drawable.redpeg));
-         color="red";
-     case 3:
-         view.setImageDrawable(mResources.getDrawable(R.drawable.purplepeg));
-         color="purple";
-         break;
-     case 4:
-         view.setImageDrawable(mResources.getDrawable(R.drawable.whitepeg));
-         color="white";
-     case 5:
-         view.setImageDrawable(mResources.getDrawable(R.drawable.yellowpeg));
-         color="yellow";
-         break;
-     default:
-         break;
-	 }
-	 
-	 return color;
-}
-
 public void create_randompeck_feedback(ImageView view){
 	
 
@@ -463,27 +428,4 @@ public String create_randompeck(ImageView view,Integer randInt){
         progressValueTextView.setText(randomPercent.asIntValue() + PERCENT_CHAR);
     }
     
-    public boolean compareDrawable(Drawable d1, Drawable d2){
-        try{
-            Bitmap bitmap1 = ((BitmapDrawable)d1).getBitmap();
-            ByteArrayOutputStream stream1 = new ByteArrayOutputStream();
-            bitmap1.compress(Bitmap.CompressFormat.JPEG, 100, stream1);
-            stream1.flush();
-            byte[] bitmapdata1 = stream1.toByteArray();
-            stream1.close();
-
-            Bitmap bitmap2 = ((BitmapDrawable)d2).getBitmap();
-            ByteArrayOutputStream stream2 = new ByteArrayOutputStream();
-            bitmap2.compress(Bitmap.CompressFormat.JPEG, 100, stream2);
-            stream2.flush();
-            byte[] bitmapdata2 = stream2.toByteArray();
-            stream2.close();
-
-            return bitmapdata1.equals(bitmapdata2);
-        }
-        catch (Exception e) {
-            // TODO: handle exception
-        }
-        return false;
-    }
 }
