@@ -4,6 +4,13 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
+import android.content.DialogInterface;
+
 import android.R.integer;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
@@ -13,6 +20,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.MarginLayoutParams;
@@ -262,6 +270,7 @@ public class Mastermind extends Activity {
             //view3.setClickable(false);
             view3.setOnClickListener(new OnClickListener() {
 				
+				@SuppressLint("NewApi")
 				@Override
 				public void onClick(View v) {
 					v.setClickable(false);
@@ -308,9 +317,12 @@ public class Mastermind extends Activity {
 					    
 						
 						if((feedbacks[contador_feedbacks-1])==40){
-						        Toast toa = Toast.makeText(getApplicationContext(),
-					                    "Fiiiiiiin", Toast.LENGTH_SHORT);
-					        	toa.show();}
+							logconsole+="Game Over your combination is: "+guesses[contador_feedbacks-1];
+							console.setText(logconsole);
+							///Asi se llama al dialog para presentar el final
+							FragmentManager fragmentManager = getFragmentManager();
+					           DialogPersonalize dialogo = new DialogPersonalize();
+					        dialogo.show(fragmentManager, "tagAlerta");}
 						else mGame.killOne(guesses[contador_feedbacks-1]);
 						
 						
@@ -517,5 +529,52 @@ public String create_randompeck(ImageView view,Integer randInt){
         }
         return false;
     }
+
+
+	@SuppressLint({ "NewApi", "ValidFragment" })
+	public class DialogPersonalize extends DialogFragment {
+
+		@Override
+	    public Dialog onCreateDialog(Bundle savedInstanceState) {
+	 
+	    AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
+	    LayoutInflater inflater = this.getActivity().getLayoutInflater();
+
+	    View view=(View) findViewById(R.layout.dialog_ejemplo);
+	    ImageView peg1=(ImageView) findViewById(R.id.peg_win1);
+	    ImageView peg2=(ImageView) findViewById(R.id.peg_win2);
+	    ImageView peg3=(ImageView) findViewById(R.id.peg_win3);
+	    ImageView peg4=(ImageView) findViewById(R.id.peg_win4);
+	    
+	    int fichas_gen= guesses[contador_guesses];
+	
+		// / parte el enteros en digitos
+		int[] digitos = { 0, 0, 0, 0 };
+		int contadortotal = 3;
+
+		while (fichas_gen > 0) {
+			digitos[contadortotal--] = fichas_gen % 10;
+			fichas_gen /= 10;
+		}
+	    create_randompeck(peg1, digitos[0]);
+	    create_randompeck(peg2, digitos[1]);
+	    create_randompeck(peg3, digitos[2]);
+	    create_randompeck(peg4, digitos[3]);
+	
+	
+	
+	    builder.setView(inflater.inflate(R.layout.dialog_ejemplo, null))
+	       .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+		   public void onClick(DialogInterface dialog, int id) {
+		          dialog.cancel();
+		   }
+	    });
+	 
+	    return builder.create();
+	    }
+	}
+    
+    
+    
 }
 
