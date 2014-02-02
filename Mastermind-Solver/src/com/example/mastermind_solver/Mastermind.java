@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
+import android.R.integer;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
@@ -205,10 +206,11 @@ public class Mastermind extends Activity {
         logconsole+="Combination guessing.... \n";   	
         logconsole+="Round #"+jtuca+" \n";
 
-        
 		guesses[contador_guesses] = generar_sigFichas();
-        console.setText(logconsole);
+		console.setText(logconsole);
         contador_guesses++;
+        
+        
         //Bloqueando clickable a las fichas generadas
         for (int i =0; i < sSlotPosition.length; i++) {
             ImageView view = (ImageView) findViewById(sSlotPosition[i]);
@@ -216,15 +218,14 @@ public class Mastermind extends Activity {
             ImageView view2= (ImageView) findViewById(sSmallSlotPosition[i]);
             view2.setClickable(true);
 		}
-        
-        
+      
         TOTAL_PEG_SLOTS=TOTAL_PEG_SLOTS-4;
         //bloqueando clickable a los feeds restantes
         for (int i = 0; i < TOTAL_PEG_SLOTS; i++) {
             ImageView view = (ImageView) findViewById(sSmallSlotPosition[i]);
             view.setClickable(false);
 		}
-        
+
         ImageView view = (ImageView) findViewById(confirm[confirt]);
         confirt--;
         view.setImageDrawable(mResources.getDrawable(R.drawable.confirm));
@@ -255,7 +256,7 @@ public class Mastermind extends Activity {
 				});
             
  		}
-        
+
         for (int i = 0; i < 8; i++) {
             ImageView view3 = (ImageView) findViewById(confirm[i]);
             //view3.setClickable(false);
@@ -264,19 +265,21 @@ public class Mastermind extends Activity {
 				@Override
 				public void onClick(View v) {
 					v.setClickable(false);
-					if(confirt>=0){				 
-				    	
+		
+					if(confirt>=0){			
+					   			    	
 						jtuca++;
 				        logconsole+="Combination guessing.... \n";   	
 
 				        logconsole+="Round # "+jtuca+" \n";
-
+				        if (contador_feedbacks==0)
 						guesses[contador_guesses] = generar_sigFichas();
+						
+
 						ImageView v1 = (ImageView) findViewById(confirm[confirt]);
 						confirt--;
 						v1.setImageDrawable(mResources.getDrawable(R.drawable.confirm));
 						v1.setClickable(true);
-						
 						
 					    int negras=0;
 					    int grises=0;
@@ -293,29 +296,32 @@ public class Mastermind extends Activity {
 					    	
 					    	ktuca++;
 						}
+  
 					    String feedback= String.valueOf(negras)+""+String.valueOf(grises);
-					    feedbacks[contador_feedbacks]=Integer.parseInt(feedback);
-					    int g= feedbacks[index-1];
-				        
+					    feedbacks[contador_feedbacks-1]=Integer.parseInt(feedback);
+
 					    logconsole+=  guesses[0]+"-"+guesses[1]+"-"+guesses[2]+"-"+guesses[3]+"-"+
 					  			  guesses[4]+"-"+guesses[5]+"-"+guesses[6]+"-"+guesses[7]+"\n"+
-					  		      feedbacks[0]+"-"+feedbacks[1]+"-"+feedbacks[2]+"-"+feedbacks[3]+"-"+feedbacks[4]+"-"+
+					  		      feedbacks[0]+"-"	+feedbacks[1]+"-"+feedbacks[2]+"-"+feedbacks[3]+"-"+feedbacks[4]+"-"+
 					  		      feedbacks[5]+"-"+feedbacks[6]+"-"+feedbacks[7]+"\n"+ "Hay: "+poblacion.size()+" individuos en la población"+"\n------->"
-					  		      +g+"--"+index+"\n";
-						//poblacion=mGame.exterminar(feedbacks[jtuca-1], guesses[jtuca-1]);
+					  		      +contador_feedbacks+"\n";
+					    
 						
+						if((feedbacks[contador_feedbacks-1])==40){
+						        Toast toa = Toast.makeText(getApplicationContext(),
+					                    "Fiiiiiiin", Toast.LENGTH_SHORT);
+					        	toa.show();}
+					    else if((feedbacks[contador_feedbacks-1])==0)
+							 mGame.killAll(guesses[contador_feedbacks-1]);
+						    						    
+						
+					    
 						console.setText(logconsole);
+						guesses[contador_guesses] = generar_sigFichas();
 				    	contador_guesses++;
 				    	contador_feedbacks++;
 				    	
-				    	for (int h = 0; h < feedbacks.length; h++) {
-					    	Log.i("MUESTRA FEEDBACKS", ""+feedbacks[h]);
-							
-						}
-				    	for (int h = 0; h < guesses.length; h++) {
-					    	Log.i("MUESTRA GUESSES", ""+guesses[h]);
-							
-						}
+
 					}
 					}
 				});
@@ -338,6 +344,7 @@ public int generar_sigFichas(){
 		}
 		updateViews(randomPercent);
 		String[] acolor = new String[4];
+				
 		int individuo = mGame.getIndividuo();
 		int fichas_gen=individuo;
 		
@@ -360,19 +367,20 @@ public int generar_sigFichas(){
 			acolor[i] = Color;
 			ituca++;
 		}
-
-		/*logconsole+=  guesses[0]+"-"+guesses[1]+"-"+guesses[2]+"-"+guesses[3]+"-"+
+if (jtuca==1){
+	
+	
+		logconsole+=  guesses[0]+"-"+guesses[1]+"-"+guesses[2]+"-"+guesses[3]+"-"+
 	  			  guesses[4]+"-"+guesses[5]+"-"+guesses[6]+"-"+guesses[7]+"\n"+
 	  		      feedbacks[0]+"-"+feedbacks[1]+"-"+feedbacks[2]+"-"+feedbacks[3]+"-"+feedbacks[4]+"-"+
 	  		      feedbacks[5]+"-"+feedbacks[6]+"-"+feedbacks[7]+"\n"+ "Hay: "+poblacion.size()+" individuos en la población"+"\n------->"
-	  		      +jtuca+"\n"; */
+	  		      +contador_feedbacks+"\n"; 
 		
-		if(feedbacks[index]==40){
-			Toast toast = Toast.makeText(this, "Fin del juego su combinación es"+guesses[jtuca], 6000);
-        	toast.show(); 
-        	}
-		index++;
-		
+				  contador_feedbacks++;
+				   
+}
+
+
 
     return fichas_gen;
 }
@@ -393,6 +401,7 @@ public String insert_randompeck(ImageView view){
      case 2:
          view.setImageDrawable(mResources.getDrawable(R.drawable.redpeg));
          color="red";
+         break;
      case 3:
          view.setImageDrawable(mResources.getDrawable(R.drawable.whitepeg));
          color="white";
@@ -400,10 +409,10 @@ public String insert_randompeck(ImageView view){
      case 4:
          view.setImageDrawable(mResources.getDrawable(R.drawable.yellowpeg));
          color="yellow";
+         break;
      case 5:
          view.setImageDrawable(mResources.getDrawable(R.drawable.purplepeg));
          color="purple";
-     
          break;
      default:
          break;
@@ -411,6 +420,7 @@ public String insert_randompeck(ImageView view){
 	 
 	 return color;
 }
+
 
 public void create_randompeck_feedback(ImageView view){
 	
@@ -443,6 +453,7 @@ public String create_randompeck(ImageView view,Integer randInt){
      case 2:
          view.setImageDrawable(mResources.getDrawable(R.drawable.redpeg));
          color="red";
+         break;
      case 3:
          view.setImageDrawable(mResources.getDrawable(R.drawable.whitepeg));
          color="white";
@@ -450,6 +461,7 @@ public String create_randompeck(ImageView view,Integer randInt){
      case 4:
          view.setImageDrawable(mResources.getDrawable(R.drawable.yellowpeg));
          color="yellow";
+         break;
      case 5:
          view.setImageDrawable(mResources.getDrawable(R.drawable.purplepeg));
          color="purple";
@@ -493,3 +505,4 @@ public String create_randompeck(ImageView view,Integer randInt){
         return false;
     }
 }
+

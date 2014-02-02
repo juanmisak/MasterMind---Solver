@@ -86,6 +86,15 @@ public enum Colors {
 			return false;
 	}
 	
+	public void cruzar(int[] guesses, int[] feedbacks) {
+		for(int i=0;i<8;i++){
+			
+			
+		}
+		
+	}
+	
+	
 	
 	public int randomGuess (){
 		int n = 0;
