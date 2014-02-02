@@ -2,7 +2,12 @@ package com.example.mastermind_solver;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+
+import org.paukov.combinatorics.Factory;
+import org.paukov.combinatorics.Generator;
+import org.paukov.combinatorics.ICombinatoricsVector;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -271,7 +276,7 @@ public class Mastermind extends Activity {
             view3.setOnClickListener(new OnClickListener() {
 				
 				@SuppressLint("NewApi")
-				@Override
+				@Override	
 				public void onClick(View v) {
 					v.setClickable(false);
 		
@@ -332,8 +337,14 @@ public class Mastermind extends Activity {
 					    
 					    
 					    if (mGame.getScore(feedbacks[contador_feedbacks-1])>=10){
-            				killComplement(guesses[contador_feedbacks-1]);
-
+					    	for (int j = 0; j < poblacion.size(); j++) {
+					    		Log.i("POBLACION:", ""+poblacion.get(j));	            					
+							}
+					    	
+					    	//killComplement(guesses[contador_feedbacks-1]);
+					    	mGame.killOne(guesses[contador_feedbacks-1]);
+					    	killComplementv1(guesses[contador_feedbacks-1]);
+					    	
             				Log.i("SI entro!!!"+mGame.getScore(feedbacks[0])+"--"+mGame.getScore(feedbacks[1])+"--"+mGame.getScore(feedbacks[1])
     					    		+"--"+mGame.getScore(feedbacks[2])+"--"+mGame.getScore(feedbacks[3])
     					    		+"--"+mGame.getScore(feedbacks[4])+"--"+mGame.getScore(feedbacks[5])
@@ -364,6 +375,66 @@ public class Mastermind extends Activity {
      	//create_randompeck_feedback((ImageView) findViewById	(sSmallSlotPosition[i]));			
 }
 
+	public void killComplementv1(int guess) {
+
+		int p1 =guess/1000;  
+		int p2 =(guess/100)%10;
+		int p3 =(guess/10) % 10; 
+		int p4 = guess % 10;
+		
+		String s1,s2,s3,s4;
+		s1=String.valueOf(p1);
+		s2=String.valueOf(p2);
+		s3=String.valueOf(p3);
+		s4=String.valueOf(p4);
+		
+		
+		mGame.killAll(45);
+		mGame.killAll(01);
+		mGame.killAll(23);
+
+		for (int i = 0; i < poblacion.size(); i++) {
+			System.out.println("poblacion NATERIOR" + poblacion.get(i));
+		}
+
+		// Create the initial vector of 3 elements (apple, orange, cherry)
+		ICombinatoricsVector<String> originalVector = Factory
+				.createVector(new String[] { s1, s2, s3, s4 });
+
+		// Create the permutation generator by calling the appropriate method in
+		// the Factory class
+		Generator<String> gen = Factory
+				.createPermutationGenerator(originalVector);
+
+		Log.i("size orginalvector", "" + originalVector.getSize());
+		// Print the result
+
+		for (ICombinatoricsVector<String> perm : gen) {
+			int valor=(1000 * Integer.parseInt(perm.getValue(0)))
+					+ (100 * Integer.parseInt(perm.getValue(1)))
+					+ (Integer.parseInt(perm.getValue(2)) * 10)
+					+ Integer.parseInt(perm.getValue(3));
+			Boolean flag=false;
+			for (int i = 0; i < guesses.length; i++) {
+				if(valor==guesses[i]){
+					flag=true;
+				}
+			}
+			if (flag == false) {
+				poblacion.add(valor);
+			}
+
+			System.out.println("permutacion" + perm);
+			Log.i("Permutacion", "" + perm.getValue(0) + " " + perm.getValue(1)
+					+ " " + perm.getValue(2) + " " + perm.getValue(3) + " ");
+		}
+
+		for (int i = 0; i < poblacion.size(); i++) {
+			System.out.println("poblacion actual" + poblacion.get(i));
+		}
+
+	}
+	
 	public void killComplement(int guess) {
 		int p1 =guess/1000;  
 		int p2 =(guess/100)%10;
@@ -371,8 +442,8 @@ public class Mastermind extends Activity {
 		int p4 = guess % 10;
 		int cq1=0,cq2=0,cq3=0,cq4=0;
 		
-		
 		for (int tt = 0; tt < poblacion.size(); tt++) {
+			int pob= poblacion.size();
 			int GUESS =poblacion.get(tt);
 			
 			int q1 =GUESS/1000;  
@@ -380,27 +451,78 @@ public class Mastermind extends Activity {
 			int q3 =(GUESS/10) % 10; 
 			int q4 = GUESS % 10;
 		
-			if(p1==q1){cq1++;q1=99;}
-			if(p1==q2){cq2++;q2=99;}
-			if(p1==q3){cq3++;q3=99;}
-			if(p1==q4){cq4++;q4=99;}
-			
-			if(p2==q1){cq1++;q1=99;}
-			if(p2==q2){cq2++;q2=99;}
-			if(p2==q3){cq3++;q3=99;}
-			if(p2==q4){cq4++;q4=99;}
-			
-			if(p3==q1){cq1++;q1=99;}
-			if(p3==q2){cq2++;q2=99;}
-			if(p3==q3){cq3++;q3=99;}
-			if(p3==q4){cq4++;q4=99;}
-			
-			if(p4==q1){cq1++;q1=99;}
-			if(p4==q2){cq2++;q2=99;}
-			if(p4==q3){cq3++;q3=99;}
-			if(p4==q4){cq4++;q4=99;}
-			
-			if(cq1!=1  ||  cq2!=1  ||  cq3!=1  ||  cq4!=1){poblacion.remove(tt);cq1=cq2=cq3=cq4=0;}	
+			if(p1==q1){
+				cq1++;
+				q1=99;
+			}
+			if (p1 == q2) {
+				cq2++;
+				q2 = 99;
+			}
+			if (p1 == q3) {
+				cq3++;
+				q3 = 99;
+			}
+			if (p1 == q4) {
+				cq4++;
+				q4 = 99;
+			}
+
+			if (p2 == q1) {
+				cq1++;
+				q1 = 99;
+			}
+			if (p2 == q2) {
+				cq2++;
+				q2 = 99;
+			}
+			if (p2 == q3) {
+				cq3++;
+				q3 = 99;
+			}
+			if (p2 == q4) {
+				cq4++;
+				q4 = 99;
+			}
+
+			if (p3 == q1) {
+				cq1++;
+				q1 = 99;
+			}
+			if (p3 == q2) {
+				cq2++;
+				q2 = 99;
+			}
+			if (p3 == q3) {
+				cq3++;
+				q3 = 99;
+			}
+			if (p3 == q4) {
+				cq4++;
+				q4 = 99;
+			}
+
+			if (p4 == q1) {
+				cq1++;
+				q1 = 99;
+			}
+			if (p4 == q2) {
+				cq2++;
+				q2 = 99;
+			}
+			if (p4 == q3) {
+				cq3++;
+				q3 = 99;
+			}
+			if (p4 == q4) {
+				cq4++;
+				q4 = 99;
+			}
+
+			if (cq1 != 1 || cq2 != 1 || cq3 != 1 || cq4 != 1) {
+				poblacion.remove(tt);
+				cq1 = cq2 = cq3 = cq4 = 0;
+			}
 			
 			cq1=cq2=cq3=cq4=0;
 			
