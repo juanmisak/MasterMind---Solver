@@ -311,13 +311,24 @@ public class Mastermind extends Activity {
 						        Toast toa = Toast.makeText(getApplicationContext(),
 					                    "Fiiiiiiin", Toast.LENGTH_SHORT);
 					        	toa.show();}
-					    else if((feedbacks[contador_feedbacks-1])==0)
+						else mGame.killOne(guesses[contador_feedbacks-1]);
+						
+						
+					    if((feedbacks[contador_feedbacks-1])==0)
 							 mGame.killAll(guesses[contador_feedbacks-1]);
+						
+					    else if ((feedbacks[contador_feedbacks-1])>=14){
+            				mGame.killComplement(guesses[contador_feedbacks-1]);
+            			}
 						    						    
 						
 					    
 						console.setText(logconsole);
-						guesses[contador_guesses] = generar_sigFichas();
+						
+				
+							guesses[contador_guesses] = generar_sigFichas();
+							
+						
 				    	contador_guesses++;
 				    	contador_feedbacks++;
 				    	
@@ -329,6 +340,8 @@ public class Mastermind extends Activity {
 
      	//create_randompeck_feedback((ImageView) findViewById	(sSmallSlotPosition[i]));			
 }
+
+	
 	
 public int generar_sigFichas(){
 		double x = ((double) poblacion.size() / (double) poblacion_inicial);
