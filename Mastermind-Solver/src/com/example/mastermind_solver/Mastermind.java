@@ -316,7 +316,7 @@ public class Mastermind extends Activity {
 					  		      +contador_feedbacks+"\n";
 					    
 						
-						if((feedbacks[contador_feedbacks-1])==40){
+						if(mGame.getScore(feedbacks[contador_feedbacks-1])==14){
 							logconsole+="Game Over your combination is: "+guesses[contador_feedbacks-1];
 							console.setText(logconsole);
 							///Asi se llama al dialog para presentar el final
@@ -326,14 +326,25 @@ public class Mastermind extends Activity {
 						else mGame.killOne(guesses[contador_feedbacks-1]);
 						
 						
-					    if((feedbacks[contador_feedbacks-1])==0)
+					    if(mGame.getScore(feedbacks[contador_feedbacks-1])==0)
 							 mGame.killAll(guesses[contador_feedbacks-1]);
-						
-					    else if ((feedbacks[contador_feedbacks-1])>=14){
-            				mGame.killComplement(guesses[contador_feedbacks-1]);
+					    
+					    
+					    
+					    if (mGame.getScore(feedbacks[contador_feedbacks-1])>=10){
+            				killComplement(guesses[contador_feedbacks-1]);
+
+            				Log.i("SI entro!!!"+mGame.getScore(feedbacks[0])+"--"+mGame.getScore(feedbacks[1])+"--"+mGame.getScore(feedbacks[1])
+    					    		+"--"+mGame.getScore(feedbacks[2])+"--"+mGame.getScore(feedbacks[3])
+    					    		+"--"+mGame.getScore(feedbacks[4])+"--"+mGame.getScore(feedbacks[5])
+    					    		+"--"+mGame.getScore(feedbacks[6])+"--"+mGame.getScore(feedbacks[7]),"--matar "+guesses[contador_feedbacks-1]);
             			}
 						    						    
-						
+				    
+					    else Log.i("No entro!!"+mGame.getScore(feedbacks[0])+"--"+mGame.getScore(feedbacks[1])+"--"+mGame.getScore(feedbacks[1])
+					    		+"--"+mGame.getScore(feedbacks[2])+"--"+mGame.getScore(feedbacks[3])
+					    		+"--"+mGame.getScore(feedbacks[4])+"--"+mGame.getScore(feedbacks[5])
+					    		+"--"+mGame.getScore(feedbacks[6])+"--"+mGame.getScore(feedbacks[7]),"--");
 					    
 						console.setText(logconsole);
 						
@@ -353,8 +364,50 @@ public class Mastermind extends Activity {
      	//create_randompeck_feedback((ImageView) findViewById	(sSmallSlotPosition[i]));			
 }
 
-	
-	
+	public void killComplement(int guess) {
+		int p1 =guess/1000;  
+		int p2 =(guess/100)%10;
+		int p3 =(guess/10) % 10; 
+		int p4 = guess % 10;
+		int cq1=0,cq2=0,cq3=0,cq4=0;
+		
+		
+		for (int tt = 0; tt < poblacion.size(); tt++) {
+			int GUESS =poblacion.get(tt);
+			
+			int q1 =GUESS/1000;  
+			int q2 =(GUESS/100)%10;
+			int q3 =(GUESS/10) % 10; 
+			int q4 = GUESS % 10;
+		
+			if(p1==q1){cq1++;q1=99;}
+			if(p1==q2){cq2++;q2=99;}
+			if(p1==q3){cq3++;q3=99;}
+			if(p1==q4){cq4++;q4=99;}
+			
+			if(p2==q1){cq1++;q1=99;}
+			if(p2==q2){cq2++;q2=99;}
+			if(p2==q3){cq3++;q3=99;}
+			if(p2==q4){cq4++;q4=99;}
+			
+			if(p3==q1){cq1++;q1=99;}
+			if(p3==q2){cq2++;q2=99;}
+			if(p3==q3){cq3++;q3=99;}
+			if(p3==q4){cq4++;q4=99;}
+			
+			if(p4==q1){cq1++;q1=99;}
+			if(p4==q2){cq2++;q2=99;}
+			if(p4==q3){cq3++;q3=99;}
+			if(p4==q4){cq4++;q4=99;}
+			
+			if(cq1!=1  ||  cq2!=1  ||  cq3!=1  ||  cq4!=1){poblacion.remove(tt);cq1=cq2=cq3=cq4=0;}	
+			
+			cq1=cq2=cq3=cq4=0;
+			
+		}
+
+	}
+
 public int generar_sigFichas(){
 		double x = ((double) poblacion.size() / (double) poblacion_inicial);
 		Percent randomPercent = new Percent((int) (x * 100));

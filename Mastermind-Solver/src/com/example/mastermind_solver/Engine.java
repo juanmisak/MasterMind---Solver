@@ -1,6 +1,9 @@
 package com.example.mastermind_solver;
 
+import java.security.spec.MGF1ParameterSpec;
 import java.util.ArrayList;
+
+import android.util.Log;
 import android.widget.Toast;
 import java.util.ListIterator;
 
@@ -113,9 +116,7 @@ public enum Colors {
 		
 		if (getScore(feedback) == 0){
 			killAll(guess);
-		if(getScore(feedback)>=14)
-			killComplement(guess);
-		
+				
 		}
 		
 		return poblacion;
@@ -129,29 +130,7 @@ public enum Colors {
 		}
 	}
 	
-	public void killComplement(int guess) {
-		int p1 =guess/1000;  
-		int p2 =(guess/100)%10;
-		int p3 =(guess/10) % 10; 
-		int p4 = guess % 10;
-		
-		ListIterator<Integer> itera = poblacion.listIterator(poblacion.size());
-		while (itera.hasPrevious()){
-			int GUESS = itera.previous().intValue();
-			int q1 =GUESS/1000;  
-			int q2 =(GUESS/100)%10;
-			int q3 =(GUESS/10) % 10; 
-			int q4 = GUESS % 10;
-			if (!(p1==q1||p1==q2||p1==q3||p1==q4)&&
-				(p2==q1||p2==q2||p2==q3||p2==q4)&&
-				(p3==q1||p3==q2||p3==q3||p3==q4)&&
-				(p4==q1||p4==q2||p4==q3||p4==q4)){
-				
-				itera.remove();
-			}
-		}
-		
-	}
+
 	
 	public void killAll(int guess) {
 		// TODO Auto-generated method stub
