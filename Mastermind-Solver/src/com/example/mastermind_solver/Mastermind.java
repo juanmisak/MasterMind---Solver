@@ -4,7 +4,15 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -12,6 +20,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.MarginLayoutParams;
@@ -38,6 +47,7 @@ import android.widget.TextView;
  *  [ab,ab,ab,ab,ab,ab,ab,ab]
  */
 
+@SuppressLint("ValidFragment")
 public class Mastermind extends Activity {
 	public static final String PERCENT_CHAR = "%";
     public static final int MAX_PERCENT_RANDOM_VALUE = 100;
@@ -212,9 +222,13 @@ public class Mastermind extends Activity {
         jtuca++;
         logconsole+="Combination guessing.... \n";   	
         logconsole+="Round #"+jtuca+" \n";
-
-        
 		guesses[contador_guesses] = generar_sigFichas();
+
+        logconsole+=  guesses[0]+"-"+guesses[1]+"-"+guesses[2]+"-"+guesses[3]+"-"+
+	  			  guesses[4]+"-"+guesses[5]+"-"+guesses[6]+"-"+guesses[7]+"\n"+
+	  		      feedbacks[0]+"-"+feedbacks[1]+"-"+feedbacks[2]+"-"+feedbacks[3]+"-"+feedbacks[4]+"-"+
+	  		      feedbacks[5]+"-"+feedbacks[6]+"-"+feedbacks[7]+"\n"+ "Hay: "+poblacion.size()+"individuos en la población"+"\n";
+        
         console.setText(logconsole);
         contador_guesses++;
         //Bloqueando clickable a las fichas generadas
@@ -269,11 +283,11 @@ public class Mastermind extends Activity {
             //view3.setClickable(false);
             view3.setOnClickListener(new OnClickListener() {
 				
+				@SuppressLint("NewApi")
 				@Override
 				public void onClick(View v) {
 					v.setClickable(false);
 					if(confirt>=0){				 
-				    	
 						jtuca++;
 				        logconsole+="Combination guessing.... \n";   	
 				        logconsole+="Round # "+jtuca+" \n";
@@ -302,7 +316,17 @@ public class Mastermind extends Activity {
 						}
 					    String feedback= String.valueOf(negras)+""+String.valueOf(grises);
 					    feedbacks[contador_feedbacks]=Integer.parseInt(feedback);
-				        
+
+						if(feedbacks[contador_feedbacks]==40){
+							logconsole+="Game Over your combination is: "+guesses[contador_guesses];
+							console.setText(logconsole);
+							///Asi se llama al dialog para presentar el final
+							FragmentManager fragmentManager = getFragmentManager();
+					           DialogPersonalize dialogo = new DialogPersonalize();
+					        dialogo.show(fragmentManager, "tagAlerta");
+			                
+							
+						}
 				        logconsole+=  guesses[0]+"-"+guesses[1]+"-"+guesses[2]+"-"+guesses[3]+"-"+
 					  			  guesses[4]+"-"+guesses[5]+"-"+guesses[6]+"-"+guesses[7]+"\n"+
 					  		      feedbacks[0]+"-"+feedbacks[1]+"-"+feedbacks[2]+"-"+feedbacks[3]+"-"+feedbacks[4]+"-"+
@@ -331,7 +355,7 @@ public class Mastermind extends Activity {
 
      	//create_randompeck_feedback((ImageView) findViewById	(sSmallSlotPosition[i]));			
 }
-	
+
 public int generar_sigFichas(){
 		double x = ((double) poblacion.size() / (double) poblacion_inicial);
 		Percent randomPercent = new Percent((int) (x * 100));
@@ -402,6 +426,7 @@ public String create_randompeck(ImageView view,Integer randInt){
      case 2:
          view.setImageDrawable(mResources.getDrawable(R.drawable.redpeg));
          color="red";
+         break;
      case 3:
          view.setImageDrawable(mResources.getDrawable(R.drawable.whitepeg));
          color="white";
@@ -409,6 +434,7 @@ public String create_randompeck(ImageView view,Integer randInt){
      case 4:
          view.setImageDrawable(mResources.getDrawable(R.drawable.yellowpeg));
          color="yellow";
+         break;
      case 5:
          view.setImageDrawable(mResources.getDrawable(R.drawable.purplepeg));
          color="purple";
@@ -422,10 +448,56 @@ public String create_randompeck(ImageView view,Integer randInt){
 	
     
 
-    private void updateViews(Percent randomPercent) {
+    @SuppressLint("NewApi")
+	private void updateViews(Percent randomPercent) {
     	Log.i("entro al rando", ""+randomPercent);
         progressBar.setCurrentValue(randomPercent);
         progressValueTextView.setText(randomPercent.asIntValue() + PERCENT_CHAR);
     }
     
+
+@SuppressLint("NewApi")
+public class DialogPersonalize extends DialogFragment {
+    @SuppressLint("NewApi")
+	@Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+ 
+    AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
+    LayoutInflater inflater = this.getActivity().getLayoutInflater();
+
+    View view=(View) findViewById(R.layout.dialog_ejemplo);
+    ImageView peg1=(ImageView) findViewById(R.id.peg_win1);
+    ImageView peg2=(ImageView) findViewById(R.id.peg_win2);
+    ImageView peg3=(ImageView) findViewById(R.id.peg_win3);
+    ImageView peg4=(ImageView) findViewById(R.id.peg_win4);
+    
+    int fichas_gen= guesses[contador_guesses];
+	
+	// / parte el enteros en digitos
+	int[] digitos = { 0, 0, 0, 0 };
+	int contadortotal = 3;
+
+	while (fichas_gen > 0) {
+		digitos[contadortotal--] = fichas_gen % 10;
+		fichas_gen /= 10;
+	}
+    create_randompeck(peg1, digitos[0]);
+    create_randompeck(peg2, digitos[1]);
+    create_randompeck(peg3, digitos[2]);
+    create_randompeck(peg4, digitos[3]);
+	
+	
+	
+    builder.setView(inflater.inflate(R.layout.dialog_ejemplo, null))
+       .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+           public void onClick(DialogInterface dialog, int id) {
+                  dialog.cancel();
+           }
+    });
+ 
+    return builder.create();
+    }
 }
+}
+
+
