@@ -2,6 +2,7 @@ package com.example.mastermind_solver;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -90,6 +91,9 @@ public class Mastermind extends Activity {
 	public int[] confirm = new int[8];
 	public int[] guesses = new int[8];
 	public int[] feedbacks = new int[8];
+	public int[][] guessesSorts = new int[8][2]; 	
+	
+	int[][] multi = new int[8][2];
 
 	Engine mGame = new Engine();
 	int mGuess = 0;
@@ -341,7 +345,7 @@ public class Mastermind extends Activity {
 								+ "Hay: " + poblacion.size()
 								+ " individuos en la población" + "\n------->"
 								+ contador_feedbacks + "\n";
-
+						sortGuesses();
 						if (mGame.getScore(feedbacks[contador_feedbacks - 1]) == 14) {
 							logconsole += "Game Over your combination is: "
 									+ guesses[contador_feedbacks - 1];
@@ -398,13 +402,21 @@ public class Mastermind extends Activity {
 
 						if (mGame.getScore(feedbacks[contador_feedbacks - 1]) == 0)
 							mGame.killAll(guesses[contador_feedbacks - 1]);
+						
+						if (mGame.getScore(feedbacks[contador_feedbacks-1])<=5)
+						{
+							
+							mGame.killOne(guesses[contador_feedbacks - 1]);
+						}
+							
+
 
 						if (mGame.getScore(feedbacks[contador_feedbacks - 1]) >= 10) {
-							for (int j = 0; j < poblacion.size(); j++) {
+		/*					for (int j = 0; j < poblacion.size(); j++) {
 								Log.i("POBLACION:", "" + poblacion.get(j));
-							}
+								
+							}*/
 
-							// killComplement(guesses[contador_feedbacks-1]);
 							mGame.killOne(guesses[contador_feedbacks - 1]);
 							killComplementv1(guesses[contador_feedbacks - 1]);
 
@@ -433,8 +445,20 @@ public class Mastermind extends Activity {
 									+ "--" + mGame.getScore(feedbacks[7]), "--");
 
 						console.setText(logconsole);
+if (mGame.getScore(feedbacks[contador_feedbacks-1])>5 &&
+							(mGame.getScore(feedbacks[contador_feedbacks-1])<10))							
+							guesses[contador_guesses]=hillClimbing();
 
-						guesses[contador_guesses] = generar_sigFichas();
+else {
+	guesses[contador_guesses] = generar_sigFichas();}
+logconsole += guesses[0] + "-" + guesses[1] + "-" + guesses[2]
+		+ "-" + guesses[3] + "-" + guesses[4] + "-" + guesses[5]
+		+ "-" + guesses[6] + "-" + guesses[7] + "\n" + feedbacks[0]
+		+ "-" + feedbacks[1] + "-" + feedbacks[2] + "-"
+		+ feedbacks[3] + "-" + feedbacks[4] + "-" + feedbacks[5]
+		+ "-" + feedbacks[6] + "-" + feedbacks[7] + "\n" + "Hay: "
+		+ poblacion.size() + " individuos en la población"
+		+ "\n------->" + contador_feedbacks + "\n";
 
 						contador_guesses++;
 						contador_feedbacks++;
@@ -443,6 +467,8 @@ public class Mastermind extends Activity {
 				}
 			});
 		}
+		
+		
 
 		// create_randompeck_feedback((ImageView) findViewById
 		// (sSmallSlotPosition[i]));
@@ -496,111 +522,135 @@ public class Mastermind extends Activity {
 				poblacion.add(valor);
 			}
 
-			System.out.println("permutacion" + perm);
+			/*System.out.println("permutacion" + perm);
 			Log.i("Permutacion", "" + perm.getValue(0) + " " + perm.getValue(1)
-					+ " " + perm.getValue(2) + " " + perm.getValue(3) + " ");
+					+ " " + perm.getValue(2) + " " + perm.getValue(3) + " ");*/
 		}
 
-		for (int i = 0; i < poblacion.size(); i++) {
+		/*for (int i = 0; i < poblacion.size(); i++) {
 			System.out.println("poblacion actual" + poblacion.get(i));
-		}
+		}*/
 
 	}
 
-	public void killComplement(int guess) {
-		int p1 = guess / 1000;
-		int p2 = (guess / 100) % 10;
-		int p3 = (guess / 10) % 10;
-		int p4 = guess % 10;
-		int cq1 = 0, cq2 = 0, cq3 = 0, cq4 = 0;
-
-		for (int tt = 0; tt < poblacion.size(); tt++) {
-			int pob = poblacion.size();
-			int GUESS = poblacion.get(tt);
-
-			int q1 = GUESS / 1000;
-			int q2 = (GUESS / 100) % 10;
-			int q3 = (GUESS / 10) % 10;
-			int q4 = GUESS % 10;
-
-			if (p1 == q1) {
-				cq1++;
-				q1 = 99;
+	public void sortGuesses() {
+			for (int j = 0; j < 8; j++) {
+					guessesSorts[j][1] = guesses[j];
+					guessesSorts[j][0] = mGame.getScore(feedbacks[j]);
 			}
-			if (p1 == q2) {
-				cq2++;
-				q2 = 99;
-			}
-			if (p1 == q3) {
-				cq3++;
-				q3 = 99;
-			}
-			if (p1 == q4) {
-				cq4++;
-				q4 = 99;
-			}
-
-			if (p2 == q1) {
-				cq1++;
-				q1 = 99;
-			}
-			if (p2 == q2) {
-				cq2++;
-				q2 = 99;
-			}
-			if (p2 == q3) {
-				cq3++;
-				q3 = 99;
-			}
-			if (p2 == q4) {
-				cq4++;
-				q4 = 99;
-			}
-
-			if (p3 == q1) {
-				cq1++;
-				q1 = 99;
-			}
-			if (p3 == q2) {
-				cq2++;
-				q2 = 99;
-			}
-			if (p3 == q3) {
-				cq3++;
-				q3 = 99;
-			}
-			if (p3 == q4) {
-				cq4++;
-				q4 = 99;
-			}
-
-			if (p4 == q1) {
-				cq1++;
-				q1 = 99;
-			}
-			if (p4 == q2) {
-				cq2++;
-				q2 = 99;
-			}
-			if (p4 == q3) {
-				cq3++;
-				q3 = 99;
-			}
-			if (p4 == q4) {
-				cq4++;
-				q4 = 99;
-			}
-
-			if (cq1 != 1 || cq2 != 1 || cq3 != 1 || cq4 != 1) {
-				poblacion.remove(tt);
-				cq1 = cq2 = cq3 = cq4 = 0;
-			}
-
-			cq1 = cq2 = cq3 = cq4 = 0;
-
+		
+			java.util.Arrays.sort(guessesSorts, new java.util.Comparator<int[]>() {
+			    public int compare(int[] a, int[] b) {
+			        return Double.compare(a[0], b[0]);
+			    }
+			});
+			
+		for (int j = 0; j < guessesSorts.length; j++) {
+			int k = guessesSorts[j][0];
+			int k2 = guessesSorts[j][1];
+			Log.i("" + j, " -- " + k+" -- " + k2);
 		}
-
 	}
+	
+	public int hillClimbing() {
+		int k=7, blue=0, verde=0, rojo=0, blanco=0, amarillo=0, violeta=0;
+		int[][] cont = new int[6][2];
+		boolean flag =false;
+		int s=generar_sigFichas();
+		
+		while(k-5>0&&contador_guesses<2){
+			int p1 =guessesSorts[k][0]/1000;  
+			int p2 =(guessesSorts[k][0]/100)%10;
+			int p3 =(guessesSorts[k][0]/10) % 10; 
+			int p4 = guessesSorts[k][0] % 10;
+			
+			if(p1==0){blue++;}
+			if(p1==1){verde++;}
+			if(p1==2){rojo++;}
+			if(p1==3){blanco++;}
+			if(p1==4){amarillo++;}
+			if(p1==5){violeta++;}
+			
+			if(p2==0){blue++;}
+			if(p2==1){verde++;}
+			if(p2==2){rojo++;}
+			if(p2==3){blanco++;}
+			if(p2==4){amarillo++;}
+			if(p2==5){violeta++;}
+			
+			if(p3==0){blue++;}
+			if(p3==1){verde++;}
+			if(p3==2){rojo++;}
+			if(p3==3){blanco++;}
+			if(p3==4){amarillo++;}
+			if(p3==5){violeta++;}
+			
+			if(p4==0){blue++;}
+			if(p4==1){verde++;}
+			if(p4==2){rojo++;}
+			if(p4==3){blanco++;}
+			if(p4==4){amarillo++;}
+			if(p4==5){violeta++;}
+			
+			cont[0][0]=blue;
+			cont[1][0]=verde;
+			cont[2][0]=rojo;
+			cont[3][0]=blanco;
+			cont[4][0]=amarillo;
+			cont[5][0]=violeta;
+			
+			cont[0][1]=0;
+			cont[1][1]=1;
+			cont[2][1]=2;
+			cont[3][1]=3;
+			cont[4][1]=4;
+			cont[5][1]=5;
+			k--;
+			Log.i("t chhgcjhchj = "+k,"");
+		
+		}
+		java.util.Arrays.sort(cont, new java.util.Comparator<int[]>() {
+		    public int compare(int[] a, int[] b) {
+		        return Double.compare(a[0], b[0]);
+		    }
+		});
+		for (int j = 0; j < cont.length; j++) {
+			int k1 = cont[j][0];
+			int k2 = cont[j][1];
+			Log.i("" + j, " -- " + k1+" -- " + k2);
+		}
+			
+		int t=1000*cont[5][1]+100*cont[4][1]+10*cont[3][1]+cont[2][1];
+		Log.i("t chhgcjhchj = "+t,"");
+		
+
+				int individuo =t;
+				int fichas_gen = individuo;
+
+				// / parte el enteros en digitos
+				int[] digitos = { 0, 0, 0, 0 };
+				int contadortotal = 3;
+
+				while (individuo > 0) {
+					digitos[contadortotal--] = individuo % 10;
+					individuo /= 10;
+				}
+
+				// /randoms de las fichas
+				for (int i = 0; i < 4; i++) {
+					String Color = create_randompeck(
+							(ImageView) findViewById(sSlotPosition[ituca-1]), digitos[i]);
+					String[] acolor = new String[4];
+					acolor[i] = Color;
+					
+				}
+
+				return fichas_gen;
+
+		
+		
+	}
+	
 
 	public int generar_sigFichas() {
 		double x = ((double) poblacion.size() / (double) poblacion_inicial);

@@ -1,6 +1,5 @@
 package com.example.mastermind_solver;
 
-import java.security.spec.MGF1ParameterSpec;
 import java.util.ArrayList;
 
 import android.util.Log;
@@ -156,14 +155,4 @@ public enum Colors {
 		}
 		
 	}
-
-	public int bestGuess(int actualFeedback, int pastFeedback) {
-		
-		if (getScore(actualFeedback) < getScore(pastFeedback))
-			return pastFeedback;
-		else
-			return actualFeedback;
-	}
-
-	
 }
