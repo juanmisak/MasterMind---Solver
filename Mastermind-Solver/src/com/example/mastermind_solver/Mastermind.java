@@ -10,12 +10,14 @@ import org.paukov.combinatorics.Factory;
 import org.paukov.combinatorics.Generator;
 import org.paukov.combinatorics.ICombinatoricsVector;
 
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
+import android.content.Intent;
 
 import android.R.integer;
 import android.app.Activity;
@@ -215,6 +217,13 @@ public class Mastermind extends Activity {
 
 		findViewById(R.id.confirm08).setClickable(false);
 
+		//Disabled los feedbacks
+		// Initialise the state array
+				for (int i = 4; i < sSmallSlotPosition.length; i++) {
+					ImageView im=(ImageView) findViewById(sSmallSlotPosition[i]);
+					im.setEnabled(false);
+				} // for
+		
 		console = (TextView) findViewById(R.id.consola);
 		// /Generando aletaorio en cada iteracion de los 8
 
@@ -311,6 +320,7 @@ public class Mastermind extends Activity {
 						int grises = 0;
 						for (int l = 0; l < 4; l++) {
 							ImageView ficha = (ImageView) findViewById(sSmallSlotPosition[ktuca]);
+							
 							Drawable drficha = ficha.getDrawable();
 							if (drficha != null) {
 								if (drficha.getConstantState().equals(
@@ -325,7 +335,7 @@ public class Mastermind extends Activity {
 									grises++;
 								}
 							}
-
+							ficha.setEnabled(false);
 							ktuca++;
 						}
 
@@ -385,16 +395,27 @@ public class Mastermind extends Activity {
 							create_randompeck(image1, digitos[1]);
 							create_randompeck(image2, digitos[2]);
 							create_randompeck(image3, digitos[3]);
-							Button dialogButton = (Button) dialog
-									.findViewById(R.id.btn_ok);
+							Button dialogButton = (Button) dialog.findViewById(R.id.btn_ok);
 							// if button is clicked, close the custom dialog
-							dialogButton
-									.setOnClickListener(new OnClickListener() {
+							dialogButton.setOnClickListener(new OnClickListener() {
 										@Override
 										public void onClick(View v) {
-											dialog.dismiss();  /// or finish();  
+											dialog.dismiss();  /// or finish();
+											Intent ir_mastermind= new Intent(getApplicationContext(), Mastermind.class);
+											startActivity(ir_mastermind);
+											finish();
 										}
 									});
+							Button NoButton = (Button) dialog.findViewById(R.id.btn_no);
+							// if button is clicked, close the custom dialog
+							NoButton.setOnClickListener(new OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											dialog.dismiss();
+											finish();
+										}
+									});
+							
 							dialog.show();
 ///////////////////////////////////////////////////////
 						} else
@@ -678,13 +699,15 @@ logconsole += guesses[0] + "-" + guesses[1] + "-" + guesses[2]
 			digitos[contadortotal--] = individuo % 10;
 			individuo /= 10;
 		}
-
+		int ind=ktuca;
 		// /randoms de las fichas
 		for (int i = 0; i < 4; i++) {
 			String Color = create_randompeck(
 					(ImageView) findViewById(sSlotPosition[ituca]), digitos[i]);
-			// String Color=insert_randompeck((ImageView)
-			// findViewById(sSlotPosition[ituca]));
+			ImageView ficha = (ImageView) findViewById(sSmallSlotPosition[ind]);
+			ficha.setEnabled(true);	
+			ind++;
+			
 			acolor[i] = Color;
 			ituca++;
 		}
